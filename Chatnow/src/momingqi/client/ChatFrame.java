@@ -34,7 +34,7 @@ public class ChatFrame extends JFrame
 	}
 
 	/**
-	 * ³õÊ¼»¯×é¼ş
+	 * åˆå§‹åŒ–ç»„ä»¶
 	 */
 	private void initComponent()
 	{
@@ -45,13 +45,13 @@ public class ChatFrame extends JFrame
 		JPanel infoPanel = mf.getFriendPanel(f.id);
 		JPanel buttonPanel = new JPanel(new GridLayout(1,2));
 		
-		JButton sendButton = new JButton("·¢ËÍ");
-		JButton resetButton = new JButton("ÖØÖÃ");
+		JButton sendButton = new JButton("å‘é€");
+		JButton resetButton = new JButton("é‡ç½®");
 		buttonPanel.add(tipLabel);
 		buttonPanel.add(sendButton);
 		buttonPanel.add(resetButton);
 		
-		//µ±ÊäÈë¿òÊ§È¥½¹µãÊ±£¬Ïû³ıÌáÊ¾ĞÅÏ¢
+		//å½“è¾“å…¥æ¡†å¤±å»ç„¦ç‚¹æ—¶ï¼Œæ¶ˆé™¤æç¤ºä¿¡æ¯
 		inputArea.addFocusListener(new FocusListener()	
 		{
 			
@@ -85,7 +85,7 @@ public class ChatFrame extends JFrame
 		this.add(msgArea);
 		this.add(inputArea);
 		this.add(buttonPanel);
-		this.setTitle("ÕıÔÚÓë" + f.nickname + "ÁÄÌì");
+		this.setTitle("æ­£åœ¨ä¸" + f.nickname + "èŠå¤©");
 		this.setVisible(true);
 		this.addWindowListener(new WindowAdapter()
 		{
@@ -93,42 +93,42 @@ public class ChatFrame extends JFrame
 			public void windowClosing(WindowEvent e)
 			{
 				setVisible(false);
-				mf.removeChatFrame(f.id); 	//ÒÆ³ı´Ë´°¿Ú
-				System.gc();				//GC»ØÊÕ
+				mf.removeChatFrame(f.id); 	//ç§»é™¤æ­¤çª—å£
+				System.gc();				//GCå›æ”¶
 			}
 		});
 	}
 	
 	/**
-	 * µã»÷·¢ËÍ°´Å¥Ê±
+	 * ç‚¹å‡»å‘é€æŒ‰é’®æ—¶
 	 */
 	private void sendMsg()
 	{
 		String msg = inputArea.getText();
-		if(msg.equals(""))	//Êä³ö¿òÎª¿Õ
+		if(msg.equals(""))	//è¾“å‡ºæ¡†ä¸ºç©º
 		{
-			tipLabel.setText("ÇëÊäÈëÄÚÈİ£¡");
+			tipLabel.setText("è¯·è¾“å…¥å†…å®¹ï¼");
 			return;
 		}
-		if(f.online == false)	//¶Ô·½²»ÔÚÏß
+		if(f.online == false)	//å¯¹æ–¹ä¸åœ¨çº¿
 		{
-			showError("¶Ô·½´¦ÓÚÀëÏß×´Ì¬£¬ÎŞ·¨·¢ËÍĞÅÏ¢¡£");
+			showError("å¯¹æ–¹å¤„äºç¦»çº¿çŠ¶æ€ï¼Œæ— æ³•å‘é€ä¿¡æ¯ã€‚");
 			return;
 		}
-		//¹¹½¨xml
+		//æ„å»ºxml
 		String msg_xml = String.format("<?xml version=\"1.0\" encoding=\"UTF-8\"?><msg sender=\"%s\" receiver=\"%s\">%s</msg>", mf.getID(), f.id, msg);
-		//´´½¨·¢ËÍÏûÏ¢Ïß³Ì
+		//åˆ›å»ºå‘é€æ¶ˆæ¯çº¿ç¨‹
 		SendMsgThread smt = new SendMsgThread(this, msg_xml);
 		smt.start();
 	}
 	
 	/**
-	 * ÔÚÁÄÌì¿òÖĞÏÔÊ¾msg
+	 * åœ¨èŠå¤©æ¡†ä¸­æ˜¾ç¤ºmsg
 	 * @param msg
 	 */
 	public void setMsgText(String msg)
 	{
-		//»ñÈ¡ÏµÍ³µ±Ç°Ê±¼ä
+		//è·å–ç³»ç»Ÿå½“å‰æ—¶é—´
 		msgArea.append("\n" + msg);
 	}
 	
@@ -138,7 +138,7 @@ public class ChatFrame extends JFrame
 	}
 
 	/**
-	 * ÏÔÊ¾´íÎóĞÅÏ¢
+	 * æ˜¾ç¤ºé”™è¯¯ä¿¡æ¯
 	 * @param string
 	 */
 	public void showError(String error)

@@ -17,16 +17,16 @@ import org.xml.sax.helpers.DefaultHandler;
 import momingqi.util.Util;
 
 /**
- * ½ÓÊÜÀ´×ÔÌØ¶¨ÓÃ»§µÄÏûÏ¢(ÁÄÌìÏûÏ¢£¬ÍË³öÏûÏ¢£¬ÔöÉ¾ºÃÓÑÏûÏ¢)£¬²¢½øĞĞ´¦Àí
+ * æ¥å—æ¥è‡ªç‰¹å®šç”¨æˆ·çš„æ¶ˆæ¯(èŠå¤©æ¶ˆæ¯ï¼Œé€€å‡ºæ¶ˆæ¯ï¼Œå¢åˆ å¥½å‹æ¶ˆæ¯)ï¼Œå¹¶è¿›è¡Œå¤„ç†
  * @author mingC
  *
  */
 public class ReceiveMsgThread extends Thread
 {
-	private Server server;	//·şÎñÆ÷¶ÔÏó
+	private Server server;	//æœåŠ¡å™¨å¯¹è±¡
 	private InputStream in;
 	private User user;
-	private boolean exit = false;	//ÍË³ö±êÖ¾
+	private boolean exit = false;	//é€€å‡ºæ ‡å¿—
 	
 	public ReceiveMsgThread(Server server, InputStream in, User user)
 	{
@@ -42,20 +42,20 @@ public class ReceiveMsgThread extends Thread
 		{
 			try
 			{
-				String msg = Util.readFromInputStream(in);	//·½·¨¶ÂÈû
-				System.out.println("·şÎñ¶Ë½ÓÊÜµ½À´×Ôid£º" + user.id + "µÄÏûÏ¢£º" + msg);
+				String msg = Util.readFromInputStream(in);	//æ–¹æ³•å µå¡
+				System.out.println("æœåŠ¡ç«¯æ¥å—åˆ°æ¥è‡ªidï¼š" + user.id + "çš„æ¶ˆæ¯ï¼š" + msg);
 				parseMsg(msg);
 			}
 			catch (Exception e)
 			{
 				server.removeUser(user);
-				System.out.println("ÓĞÓÃ»§·ÇÕı³£ÍË³ö£¬id£º" + user.id);
-				break;	//ÍË³öÑ­»·£¬½áÊø½ÓÊÕÏûÏ¢
+				System.out.println("æœ‰ç”¨æˆ·éæ­£å¸¸é€€å‡ºï¼Œidï¼š" + user.id);
+				break;	//é€€å‡ºå¾ªç¯ï¼Œç»“æŸæ¥æ”¶æ¶ˆæ¯
 			}
 		}
 	}
 
-	private void parseMsg(String msg)//ĞÂÔö<close>ÏûÏ¢£¬·ñÔòÓĞ´í
+	private void parseMsg(String msg)//æ–°å¢<close>æ¶ˆæ¯ï¼Œå¦åˆ™æœ‰é”™
 	{
 		InputStream in = new ByteArrayInputStream(msg.getBytes());
 		
@@ -107,7 +107,7 @@ public class ReceiveMsgThread extends Thread
 									outForReceiver.write(xml.getBytes());
 									outForReceiver.flush();
 								}
-								catch (IOException e) //Èô·¢ËÍÏûÏ¢¸ø½ÓÊÕÕßÊ§°ÜÊ±£¬Ôò·µ»Øservererror¸ø·¢ËÍÕß
+								catch (IOException e) //è‹¥å‘é€æ¶ˆæ¯ç»™æ¥æ”¶è€…å¤±è´¥æ—¶ï¼Œåˆ™è¿”å›servererrorç»™å‘é€è€…
 								{
 									OutputStream outForSender;
 									try

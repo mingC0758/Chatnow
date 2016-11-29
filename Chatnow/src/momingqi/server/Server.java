@@ -27,11 +27,11 @@ import momingqi.util.Util;
 
 public class Server extends JFrame
 {
-	public JLabel statusLabel;			//·şÎñÆ÷×´Ì¬±êÇ©
-	public JTextField portTextField;	//¶Ë¿ÚÊäÈë¿ò
-	public JButton startButton;		//Æô¶¯°´Å¥
-	public ServerSocket serverSocket;	//·şÎñÆ÷serversocket
-	public LinkedList<User> userList;				//ÔÚÏßÓÃ»§ÁĞ±í
+	public JLabel statusLabel;			//æœåŠ¡å™¨çŠ¶æ€æ ‡ç­¾
+	public JTextField portTextField;	//ç«¯å£è¾“å…¥æ¡†
+	public JButton startButton;		//å¯åŠ¨æŒ‰é’®
+	public ServerSocket serverSocket;	//æœåŠ¡å™¨serversocket
+	public LinkedList<User> userList;				//åœ¨çº¿ç”¨æˆ·åˆ—è¡¨
 	
 	public Server()
 	{
@@ -39,21 +39,21 @@ public class Server extends JFrame
 	}
 	
 	/**
-	 * ³õÊ¼»¯½çÃæ×é¼ş
+	 * åˆå§‹åŒ–ç•Œé¢ç»„ä»¶
 	 */
 	private void initComponent()
 	{
 		/**
-		 * ÊµÀı»¯
+		 * å®ä¾‹åŒ–
 		 */
-		Font font = new Font("Dialog.plain", Font.BOLD, 18);					//×ÖÌå
-		Font font2 = new Font("Dialog.plain", Font.PLAIN, 18);					//×ÖÌå
-		JPanel mainPanel = new JPanel(new GridLayout(3, 2, 0, 10));	//Ö÷Ãæ°å
-		JPanel aboutPanel = new AboutPanel();					//×÷ÕßĞÅÏ¢Ãæ°å
-		this.statusLabel = new JLabel("Î´Æô¶¯");
+		Font font = new Font("Dialog.plain", Font.BOLD, 18);					//å­—ä½“
+		Font font2 = new Font("Dialog.plain", Font.PLAIN, 18);					//å­—ä½“
+		JPanel mainPanel = new JPanel(new GridLayout(3, 2, 0, 10));	//ä¸»é¢æ¿
+		JPanel aboutPanel = new AboutPanel();					//ä½œè€…ä¿¡æ¯é¢æ¿
+		this.statusLabel = new JLabel("æœªå¯åŠ¨");
 		this.statusLabel.setForeground(Color.RED);
 		this.portTextField = new JTextField("10010");
-		this.startButton = new JButton("Æô¶¯");
+		this.startButton = new JButton("å¯åŠ¨");
 		this.startButton.addActionListener(new ActionListener()
 		{
 			
@@ -64,10 +64,10 @@ public class Server extends JFrame
 			}
 
 		});
-		Label label1 = new Label("  ·şÎñÆ÷×´Ì¬:");
-		Label label2 = new Label("         ¶Ë¿ÚºÅ:");
+		Label label1 = new Label("  æœåŠ¡å™¨çŠ¶æ€:");
+		Label label2 = new Label("         ç«¯å£å·:");
 		/**
-		 * ÉèÖÃ×ÖÌå
+		 * è®¾ç½®å­—ä½“
 		 */
 		this.statusLabel.setFont(font);
 		this.portTextField.setFont(font2);
@@ -88,7 +88,7 @@ public class Server extends JFrame
 				windowClosingPerformed();
 			}
 		});
-		this.setTitle("Chatnow¡ª¡ª·şÎñÆ÷");
+		this.setTitle("Chatnowâ€”â€”æœåŠ¡å™¨");
 		this.add(mainPanel, BorderLayout.NORTH);
 		this.add(aboutPanel, BorderLayout.SOUTH);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -97,14 +97,14 @@ public class Server extends JFrame
 	}
 
 	/**
-	 * Æô¶¯·şÎñÆ÷
+	 * å¯åŠ¨æœåŠ¡å™¨
 	 */
 	private void start()
 	{
 		int port = getPort();
 		if(port == -1) 
 		{
-			JOptionPane.showMessageDialog(this, "¶Ë¿ÚºÅ±ØĞëÔÚ1024Óë65535Ö®¼ä£¡", "¾¯¸æ", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, "ç«¯å£å·å¿…é¡»åœ¨1024ä¸65535ä¹‹é—´ï¼", "è­¦å‘Š", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 		
@@ -114,11 +114,11 @@ public class Server extends JFrame
 	}
 	
 	/**
-	 * ¹Ø±Õ·şÎñÆ÷Ê±
+	 * å…³é—­æœåŠ¡å™¨æ—¶
 	 */
 	private void windowClosingPerformed()
 	{
-		int option = JOptionPane.showConfirmDialog(this, "¹Ø±Õ·şÎñÆ÷½«Ê¹ËùÓĞÒÑÁ¬½ÓµÄ¿Í»§¶ËÏÂÏß£¬ÊÇ·ñ¼ÌĞø£¿", "¾¯¸æ", 
+		int option = JOptionPane.showConfirmDialog(this, "å…³é—­æœåŠ¡å™¨å°†ä½¿æ‰€æœ‰å·²è¿æ¥çš„å®¢æˆ·ç«¯ä¸‹çº¿ï¼Œæ˜¯å¦ç»§ç»­ï¼Ÿ", "è­¦å‘Š", 
 				JOptionPane.OK_CANCEL_OPTION);
 		
 		if(option == JOptionPane.OK_OPTION)
@@ -130,7 +130,7 @@ public class Server extends JFrame
 	}
 	
 	/**
-	 * ¹Ø±Õ×ÊÔ´
+	 * å…³é—­èµ„æº
 	 */
 	private void closeAllSocket()
 	{
@@ -149,7 +149,7 @@ public class Server extends JFrame
 	}
 
 	/**
-	 * Ìí¼ÓÓÃ»§µ½ÓÃ»§ÁĞ±í
+	 * æ·»åŠ ç”¨æˆ·åˆ°ç”¨æˆ·åˆ—è¡¨
 	 * @throws IOException 
 	 */
 	public void addUser(User user)
@@ -159,35 +159,35 @@ public class Server extends JFrame
 	}
 	
 	/**
-	 * ´ÓÓÃ»§ÁĞ±íÖĞÉ¾³ıÓÃ»§
+	 * ä»ç”¨æˆ·åˆ—è¡¨ä¸­åˆ é™¤ç”¨æˆ·
 	 * @throws IOException 
 	 */
 	public synchronized void removeUser(User user)
 	{
 		this.userList.remove(user);
 		removeOnlineUser(user);
-		System.out.println("ÓĞÓÃ»§ÍË³ö id£º" + user.id);
+		System.out.println("æœ‰ç”¨æˆ·é€€å‡º idï¼š" + user.id);
 	}
 	
 	/**
-	 * ÏòÔÚÏßÓÃ»§·¢ËÍĞÂÔöµÄÔÚÏßÓÃ»§id
+	 * å‘åœ¨çº¿ç”¨æˆ·å‘é€æ–°å¢çš„åœ¨çº¿ç”¨æˆ·id
 	 * @throws IOException 
 	 */
 	public synchronized void sendOnlineUser(User user)
 	{
 		String xml = String.format("<addOnlineUser id=\"%s\"/>", user.id);
-		System.out.println("·şÎñ¶Ë·¢ËÍÏûÏ¢£º" + xml);
+		System.out.println("æœåŠ¡ç«¯å‘é€æ¶ˆæ¯ï¼š" + xml);
 		
 		for (User u : userList)
 			{
 				try
 				{
 					if(u.id.equals(user.id)) continue;
-					u.socket.getOutputStream().write(xml.getBytes()); // ·¢ËÍÁĞ±í
+					u.socket.getOutputStream().write(xml.getBytes()); // å‘é€åˆ—è¡¨
 				}
 				catch (IOException e1)
 				{
-					// ³öÏÖÁ÷´íÎó£¬½«´ËÓÃ»§ÒÆ³öÔÚÏßÓÃ»§ÁĞ±í
+					// å‡ºç°æµé”™è¯¯ï¼Œå°†æ­¤ç”¨æˆ·ç§»å‡ºåœ¨çº¿ç”¨æˆ·åˆ—è¡¨
 					e1.printStackTrace();
 					removeUser(u);
 					return;
@@ -198,7 +198,7 @@ public class Server extends JFrame
 	public synchronized void removeOnlineUser(User user)
 	{
 		String xml = String.format("<removeOnlineUser id=\"%s\"/>", user.id);
-		for (User u: userList)	//ÏòËùÓĞÓÃ»§·¢ËÍÒÆ³ıÔÚÏßÓÃ»§ÏûÏ¢
+		for (User u: userList)	//å‘æ‰€æœ‰ç”¨æˆ·å‘é€ç§»é™¤åœ¨çº¿ç”¨æˆ·æ¶ˆæ¯
 		{
 			try
 			{
@@ -210,17 +210,17 @@ public class Server extends JFrame
 				e.printStackTrace();
 			}
 		}
-		System.out.println("·şÎñ¶Ë·¢ËÍÏûÏ¢£º" + xml);
+		System.out.println("æœåŠ¡ç«¯å‘é€æ¶ˆæ¯ï¼š" + xml);
 	}
 	
 	/**
-	 * »ñÈ¡¶Ë¿ÚºÅ£¬²¢Ğ£Ñé
-	 * @return ¶Ë¿Ú´íÎóÊ±·µ»Ø-1
+	 * è·å–ç«¯å£å·ï¼Œå¹¶æ ¡éªŒ
+	 * @return ç«¯å£é”™è¯¯æ—¶è¿”å›-1
 	 */
 	private int getPort()
 	{
 		String str_port = this.portTextField.getText();
-		if(Util.isCorrectPort(str_port))	//ÅĞ¶Ï¶Ë¿ÚÊÇ·ñºÏ·¨
+		if(Util.isCorrectPort(str_port))	//åˆ¤æ–­ç«¯å£æ˜¯å¦åˆæ³•
 		{
 			int int_port = Integer.parseInt(str_port);
 			return int_port;
@@ -234,13 +234,13 @@ public class Server extends JFrame
 	}
 
 	/**
-	 * ·¢ËÍËùÓĞÓÃ»§id¸øuser
+	 * å‘é€æ‰€æœ‰ç”¨æˆ·idç»™user
 	 * @throws IOException 
 	 */
 	public synchronized void sendUserlist(Socket socket) throws IOException
 	{
 		/**
-		 * ¹¹ÔìÓÃ»§ÁĞ±íxml
+		 * æ„é€ ç”¨æˆ·åˆ—è¡¨xml
 		 */
 		StringBuffer xml = new StringBuffer("<userlist>");
 		for(User user: userList)
@@ -250,7 +250,7 @@ public class Server extends JFrame
 		xml.append("</userlist>");
 		String str_xml = new String(xml);
 		/**
-		 * ·¢ËÍÓÃ»§ÁĞ±í
+		 * å‘é€ç”¨æˆ·åˆ—è¡¨
 		 */
 		socket.getOutputStream().write(str_xml.getBytes());
 	}

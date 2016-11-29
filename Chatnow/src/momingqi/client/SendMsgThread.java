@@ -7,7 +7,7 @@ import java.net.Socket;
 import javax.swing.JOptionPane;
 
 /**
- * ·¢ËÍÏûÏ¢msg¸øcfÁÄÌì¿ò¶ÔÓ¦µÄºÃÓÑ£¬Èô·¢ËÍÊ§°ÜÔòÔÚcfÉÏÏÔÊ¾Ïà¹ØĞÅÏ¢
+ * å‘é€æ¶ˆæ¯msgç»™cfèŠå¤©æ¡†å¯¹åº”çš„å¥½å‹ï¼Œè‹¥å‘é€å¤±è´¥åˆ™åœ¨cfä¸Šæ˜¾ç¤ºç›¸å…³ä¿¡æ¯
  * @author mingC
  *
  */
@@ -35,9 +35,9 @@ public class SendMsgThread extends Thread
 		}
 		catch (IOException e)
 		{
-			System.out.println("·¢ËÍÊ§°Ü£¡");
-			cf.showError("·¢ËÍÊ§°Ü£¡Çë¼ì²éÍøÂç×´¿ö¡£");
-			JOptionPane.showMessageDialog(cf.mf, "Óë·şÎñÆ÷¶Ï¿ªÁ¬½Ó£¡ÇëÖØĞÂµÇÂ½");
+			System.out.println("å‘é€å¤±è´¥ï¼");
+			cf.showError("å‘é€å¤±è´¥ï¼è¯·æ£€æŸ¥ç½‘ç»œçŠ¶å†µã€‚");
+			JOptionPane.showMessageDialog(cf.mf, "ä¸æœåŠ¡å™¨æ–­å¼€è¿æ¥ï¼è¯·é‡æ–°ç™»é™†");
 			return;
 		}
 	}

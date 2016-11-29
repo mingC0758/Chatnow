@@ -19,7 +19,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public final class XMLUtil
 {
 	/**
-	 * 构建客户端向服务器端发送的登陆数据的xml字符串（账户，密码）
+	 * 鏋勫缓瀹㈡埛绔悜鏈嶅姟鍣ㄧ鍙戦�佺殑鐧婚檰鏁版嵁鐨剎ml瀛楃涓诧紙璐︽埛锛屽瘑鐮侊級
 	 * @return
 	 */
 	public final static String constructLoginXML(String id, String pwd)
@@ -28,7 +28,7 @@ public final class XMLUtil
 		return xml;
 	}
 	
-	/**解析登陆xml，并返回到字符串id和pwd
+	/**瑙ｆ瀽鐧婚檰xml锛屽苟杩斿洖鍒板瓧绗︿覆id鍜宲wd
 	 * 
 	 * @param xml
 	 * @param id
@@ -51,8 +51,8 @@ public final class XMLUtil
 	}
 	
 	/**
-	 * 从usersxml里获取id对应的pwd
-	 * @return 返回pwd
+	 * 浠巙sersxml閲岃幏鍙杋d瀵瑰簲鐨刾wd
+	 * @return 杩斿洖pwd
 	 * @throws IOException 
 	 * @throws SAXException 
 	 * @throws ParserConfigurationException 
@@ -126,7 +126,7 @@ class LoginXMLHandler extends DefaultHandler
 class UsersXMLHandler extends DefaultHandler
 {
 	private String id;
-	public String cor_pwd;	//正确密码
+	public String cor_pwd;	//姝ｇ‘瀵嗙爜
 	
 	public UsersXMLHandler(String id)
 	{

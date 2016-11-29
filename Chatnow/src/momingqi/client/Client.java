@@ -36,12 +36,12 @@ public class Client extends JFrame
 	}
 	
 	/**
-	 * ½çÃæ×é¼ş³õÊ¼»¯
+	 * ç•Œé¢ç»„ä»¶åˆå§‹åŒ–
 	 */
 	private void initComponent()
 	{
-		Font font2 = new Font("Dialog.plain", Font.BOLD, 21);					//×ÖÌå
-		Font font1 = new Font("Dialog.plain", Font.PLAIN, 21);					//×ÖÌå
+		Font font2 = new Font("Dialog.plain", Font.BOLD, 21);					//å­—ä½“
+		Font font1 = new Font("Dialog.plain", Font.PLAIN, 21);					//å­—ä½“
 		
 		idTextField = new JTextField(12);
 		pwdTextField = new JTextField(12);
@@ -55,13 +55,13 @@ public class Client extends JFrame
 		ipTextField.setFont(font1);
 		portTextField.setFont(font1);
 		
-		JLabel idLabel = new JLabel("  ÕËºÅ");
-		JLabel pwdLabel = new JLabel("  ÃÜÂë");
-		JLabel ipLabel = new JLabel("ipµØÖ·");
-		JLabel portLabel = new JLabel("  ¶Ë¿Ú");
-		JButton loginButton = new JButton("µÇÂ¼");
-		JButton resetButton = new JButton("ÖØÖÃ");
-		JButton defaultButton = new JButton("Ä¬ÈÏ");
+		JLabel idLabel = new JLabel("  è´¦å·");
+		JLabel pwdLabel = new JLabel("  å¯†ç ");
+		JLabel ipLabel = new JLabel("ipåœ°å€");
+		JLabel portLabel = new JLabel("  ç«¯å£");
+		JButton loginButton = new JButton("ç™»å½•");
+		JButton resetButton = new JButton("é‡ç½®");
+		JButton defaultButton = new JButton("é»˜è®¤");
 		
 		loginButton.addActionListener(new ActionListener()
 		{
@@ -83,8 +83,8 @@ public class Client extends JFrame
 		
 		JPanel northPanel = new JPanel(new FlowLayout());
 		JPanel southPanel = new JPanel(new FlowLayout());
-		northPanel.setBorder(BorderFactory.createTitledBorder("ÓÃ»§µÇÂ¼"));
-		southPanel.setBorder(BorderFactory.createTitledBorder("·şÎñÆ÷ÅäÖÃ"));
+		northPanel.setBorder(BorderFactory.createTitledBorder("ç”¨æˆ·ç™»å½•"));
+		southPanel.setBorder(BorderFactory.createTitledBorder("æœåŠ¡å™¨é…ç½®"));
 		northPanel.add(idLabel);
 		northPanel.add(idTextField);
 		northPanel.add(pwdLabel);
@@ -116,7 +116,7 @@ public class Client extends JFrame
 	}
 
 	/**
-	 * »ñÈ¡ËùĞèĞÅÏ¢£¬´´½¨·¢ËÍÏß³Ì£¬·¢ËÍÕËºÅÃÜÂëµ½·şÎñÆ÷¼ìÑé
+	 * è·å–æ‰€éœ€ä¿¡æ¯ï¼Œåˆ›å»ºå‘é€çº¿ç¨‹ï¼Œå‘é€è´¦å·å¯†ç åˆ°æœåŠ¡å™¨æ£€éªŒ
 	 */
 	public void login()
 	{

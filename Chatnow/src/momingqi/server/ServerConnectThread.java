@@ -18,7 +18,7 @@ import momingqi.util.XMLUtil;
 import org.xml.sax.SAXException;
 
 /**
- * ¸ºÔğ½ÓÊÕ¿Í»§¶ËµÄÁ¬½Ó
+ * è´Ÿè´£æ¥æ”¶å®¢æˆ·ç«¯çš„è¿æ¥
  * @author mingC
  *
  */
@@ -44,16 +44,16 @@ public class ServerConnectThread extends Thread
 		}
 		catch (IOException e)
 		{
-			JOptionPane.showMessageDialog(server, "¶Ë¿ÚÒÑ±»Õ¼ÓÃ£¡");
+			JOptionPane.showMessageDialog(server, "ç«¯å£å·²è¢«å ç”¨ï¼");
 			return;
 		}
 		server.portTextField.setEditable(false);
 		server.statusLabel.setForeground(Color.YELLOW);
-		server.statusLabel.setText("ÔËĞĞÖĞ");
+		server.statusLabel.setText("è¿è¡Œä¸­");
 		server.startButton.setEnabled(false);
 		server.userList = new LinkedList<User>();
 		
-		System.out.println("·şÎñÆ÷ÔËĞĞÖĞ..");
+		System.out.println("æœåŠ¡å™¨è¿è¡Œä¸­..");
 		while (true)
 		{
 			try
@@ -62,30 +62,30 @@ public class ServerConnectThread extends Thread
 				InputStream in = socket.getInputStream();
 				OutputStream out = socket.getOutputStream();
 				System.out.println("someone connecting..");
-				String xml = Util.readFromInputStream(socket.getInputStream());	//¶ÁÈ¡µÇÂ½ĞÅÏ¢
-				System.out.println("½ÓÊÕµ½µÄµÇÂ½ĞÅÏ¢£º" + xml);
-				String[] u = XMLUtil.parseLoginXML(xml);			//»ñÈ¡ÓÃ»§Ìá½»µÄidºÍÃÜÂë
+				String xml = Util.readFromInputStream(socket.getInputStream());	//è¯»å–ç™»é™†ä¿¡æ¯
+				System.out.println("æ¥æ”¶åˆ°çš„ç™»é™†ä¿¡æ¯ï¼š" + xml);
+				String[] u = XMLUtil.parseLoginXML(xml);			//è·å–ç”¨æˆ·æäº¤çš„idå’Œå¯†ç 
 				String id = u[0];
 				String pwd = u[1];
-				String cor_pwd = XMLUtil.getPwd(usersxml, id);	//»ñÈ¡ÕıÈ·ÃÜÂë
-				System.out.println("ÕıÈ·ÃÜÂë£º"+cor_pwd + " ¸ÃÓÃ»§Ê¹ÓÃµÄÃÜÂë£º" + pwd);
-				if (cor_pwd != null && cor_pwd.equals(pwd))	//ÃÜÂëÕıÈ·
+				String cor_pwd = XMLUtil.getPwd(usersxml, id);	//è·å–æ­£ç¡®å¯†ç 
+				System.out.println("æ­£ç¡®å¯†ç ï¼š"+cor_pwd + " è¯¥ç”¨æˆ·ä½¿ç”¨çš„å¯†ç ï¼š" + pwd);
+				if (cor_pwd != null && cor_pwd.equals(pwd))	//å¯†ç æ­£ç¡®
 				{
-					//·¢ËÍµÇÂ½³É¹¦µÄÏûÏ¢¸ø¿Í»§¶Ë
+					//å‘é€ç™»é™†æˆåŠŸçš„æ¶ˆæ¯ç»™å®¢æˆ·ç«¯
 					socket.getOutputStream().write("succeed".getBytes());
 					socket.getOutputStream().flush();
 					User user = new User(socket, id);
-					server.sendUserlist(socket);	//°Ñµ±Ç°µÄÔÚÏßÓÃ»§ÁĞ±í·¢¸øĞÂµÇÂ½µÄÓÃ»§
-					server.addUser(user);	//µÇÂ½³É¹¦£¬½«´ËÓÃ»§Ìí¼Óµ½ÓÃ»§ÁĞ±í
-					//¿ªÆô¼àÌı´Ë¿Í»§¶ËÏûÏ¢µÄÏß³Ì
+					server.sendUserlist(socket);	//æŠŠå½“å‰çš„åœ¨çº¿ç”¨æˆ·åˆ—è¡¨å‘ç»™æ–°ç™»é™†çš„ç”¨æˆ·
+					server.addUser(user);	//ç™»é™†æˆåŠŸï¼Œå°†æ­¤ç”¨æˆ·æ·»åŠ åˆ°ç”¨æˆ·åˆ—è¡¨
+					//å¼€å¯ç›‘å¬æ­¤å®¢æˆ·ç«¯æ¶ˆæ¯çš„çº¿ç¨‹
 					ReceiveMsgThread rmt = new ReceiveMsgThread(server, in, user);
 					rmt.start();
 				}
-				else						//ÃÜÂë´íÎó
+				else						//å¯†ç é”™è¯¯
 				{
 					socket.getOutputStream().write("error".getBytes());
 					socket.getOutputStream().flush();
-					System.out.println("ÓĞÓÃ»§µÇÂ½Ê±Ê¹ÓÃÁË´íÎóµÄÕËºÅ»òÃÜÂë");
+					System.out.println("æœ‰ç”¨æˆ·ç™»é™†æ—¶ä½¿ç”¨äº†é”™è¯¯çš„è´¦å·æˆ–å¯†ç ");
 					socket.close();
 				}
 			}

@@ -30,7 +30,7 @@ import momingqi.util.XMLUtil;
 import org.xml.sax.SAXException;
 
 /**
- * ÓÃ»§Ö÷½çÃæ£¬ÏÔÊ¾ºÃÓÑÁĞ±íºÍ¸öÈËĞÅÏ¢£¬²é¿´ÁÄÌì¼ÇÂ¼£¬µ÷³öÁÄÌì¿ò
+ * ç”¨æˆ·ä¸»ç•Œé¢ï¼Œæ˜¾ç¤ºå¥½å‹åˆ—è¡¨å’Œä¸ªäººä¿¡æ¯ï¼ŒæŸ¥çœ‹èŠå¤©è®°å½•ï¼Œè°ƒå‡ºèŠå¤©æ¡†
  * @author mingC
  *
  */
@@ -40,10 +40,10 @@ public class MainFrame extends JFrame
 	private String id;
 	private String nickname;
 	private String photo;
-	private Map<String, Friend> friendMap;	//ºÃÓÑÁĞ±í
-	private FriendPanel[] friendPanel;				//ºÃÓÑĞÅÏ¢Ãæ°åÊı×é
-//	private LinkedList<String> onlineFriendList;	//ÔÚÏßÓÃ»§£¨id£©
-	private Map<String, ChatFrame> chatFrameMap;	//ÁÄÌì¿òÁĞ±í
+	private Map<String, Friend> friendMap;	//å¥½å‹åˆ—è¡¨
+	private FriendPanel[] friendPanel;				//å¥½å‹ä¿¡æ¯é¢æ¿æ•°ç»„
+//	private LinkedList<String> onlineFriendList;	//åœ¨çº¿ç”¨æˆ·ï¼ˆidï¼‰
+	private Map<String, ChatFrame> chatFrameMap;	//èŠå¤©æ¡†åˆ—è¡¨
 	
 	public MainFrame(String id, Socket socket)
 	{
@@ -62,10 +62,10 @@ public class MainFrame extends JFrame
 		try
 		{
 			friendMap = XMLUtil.parseFriends(friendsxml);
-			Friend me = friendMap.get(id);	//Í¨¹ıid»ñÈ¡±¾¿Í»§¶ËÓÃ»§µÄ¸öÈËĞÅÏ¢
+			Friend me = friendMap.get(id);	//é€šè¿‡idè·å–æœ¬å®¢æˆ·ç«¯ç”¨æˆ·çš„ä¸ªäººä¿¡æ¯
 			nickname = me.nickname;
 			photo = me.photo;
-			friendMap.remove(id);	//½«×Ô¼ºÒÆ³öºÃÓÑÁĞ±í
+			friendMap.remove(id);	//å°†è‡ªå·±ç§»å‡ºå¥½å‹åˆ—è¡¨
 			System.out.println(nickname + "  " + photo + "  ");
 		}
 		catch (ParserConfigurationException e)
@@ -84,7 +84,7 @@ public class MainFrame extends JFrame
 		new Thread()
 		{
 			/**
-			 * Ã¿10ÃëÊä³öÒ»´ÎºÃÓÑ×´Ì¬£¬ÓÃÓÚµ÷ÊÔ¡£
+			 * æ¯10ç§’è¾“å‡ºä¸€æ¬¡å¥½å‹çŠ¶æ€ï¼Œç”¨äºè°ƒè¯•ã€‚
 			 */
 			public void run()
 			{
@@ -101,7 +101,7 @@ public class MainFrame extends JFrame
 					}
 					for (Friend f : friendMap.values())
 					{
-						System.out.println("id:" + f.id + " ×´Ì¬:" + f.online);
+						System.out.println("id:" + f.id + " çŠ¶æ€:" + f.online);
 					}
 				}
 			}
@@ -120,7 +120,7 @@ public class MainFrame extends JFrame
 		System.out.println(icon);
 		
 		JPanel userPanel = new JPanel();
-		userPanel.setBorder(BorderFactory.createTitledBorder("¸öÈËĞÅÏ¢"));
+		userPanel.setBorder(BorderFactory.createTitledBorder("ä¸ªäººä¿¡æ¯"));
 
 		JLabel label;
 		JPanel rightPanel = new JPanel(new GridLayout(2,1));
@@ -132,45 +132,45 @@ public class MainFrame extends JFrame
 		label = new JLabel(id);
 		label.setFont(PlainFont);
 		rightPanel.add(label);
-		userPanel.add(new JLabel(icon));	//Í·Ïñ±êÇ©
+		userPanel.add(new JLabel(icon));	//å¤´åƒæ ‡ç­¾
 		userPanel.add(rightPanel);
 		
-		JPanel listPanel = new JPanel(new GridLayout(friendMap.size(), 1, 3, 3));//ÓÃ»§ÁĞ±íÃæ°å
-		listPanel.setBorder(BorderFactory.createTitledBorder("ºÃÓÑÁĞ±í"));	
+		JPanel listPanel = new JPanel(new GridLayout(friendMap.size(), 1, 3, 3));//ç”¨æˆ·åˆ—è¡¨é¢æ¿
+		listPanel.setBorder(BorderFactory.createTitledBorder("å¥½å‹åˆ—è¡¨"));	
 		friendPanel = new FriendPanel[Util.MAXUSERNUM];
 		int i = 0;
 		JPanel infoPanel;
 		JLabel onlineLabel;
 		/***
-		 * ÎªÃ¿Ò»¸öºÃÓÑ´´½¨Ò»¸öÃæ°åÀ´×°ÔØ£ºÍ·ÏñLabel£¬infoLabel£¨nickname,status, id£©
+		 * ä¸ºæ¯ä¸€ä¸ªå¥½å‹åˆ›å»ºä¸€ä¸ªé¢æ¿æ¥è£…è½½ï¼šå¤´åƒLabelï¼ŒinfoLabelï¼ˆnickname,status, idï¼‰
 		 */
 		for(Friend f: friendMap.values())
 		{
 			friendPanel[i] = new FriendPanel();
-			friendPanel[i].id = f.id;	//°ÑºÃÓÑid·â×°½øÈ¥
+			friendPanel[i].id = f.id;	//æŠŠå¥½å‹idå°è£…è¿›å»
 			friendPanel[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
 			infoPanel = new JPanel((new GridLayout(2,1)));
-			//êÇ³Æ
+			//æ˜µç§°
 			label = new JLabel(f.nickname);
 			label.setFont(BoldFont);
 			infoPanel.add(label);
-			//ÔÚÏß×´Ì¬
-			onlineLabel = new JLabel("  ÀëÏß");
+			//åœ¨çº¿çŠ¶æ€
+			onlineLabel = new JLabel("  ç¦»çº¿");
 			onlineLabel.setFont(PlainFont);
 			infoPanel.add(onlineLabel);
 			friendPanel[i].statusLabel = onlineLabel;
-			//ÕËºÅ
+			//è´¦å·
 			label = new JLabel(f.id);
 			label.setFont(PlainFont);
 			infoPanel.add(label);
-			//°ÑÍ·ÏñºÍinfoPanel×°ÆğÀ´
+			//æŠŠå¤´åƒå’ŒinfoPanelè£…èµ·æ¥
 			friendPanel[i].add(new JLabel(
 					new ImageIcon("resources/ImageResources/" + f.photo)));
 			friendPanel[i].add(infoPanel);
-			friendPanel[i].addMouseListener(new MouseAdapter()	//¼àÌıÃæ°å
+			friendPanel[i].addMouseListener(new MouseAdapter()	//ç›‘å¬é¢æ¿
 			{
 				@Override
-				public void mouseEntered(MouseEvent e)	//¸ÄÎªÃ÷ÁÁÉ«
+				public void mouseEntered(MouseEvent e)	//æ”¹ä¸ºæ˜äº®è‰²
 				{
 					e.getComponent().setBackground(PanelHighlight);
 				}
@@ -178,18 +178,18 @@ public class MainFrame extends JFrame
 				@Override
 				public void mouseExited(MouseEvent e)
 				{
-					e.getComponent().setBackground(PanelBackground);	//¸ÄÎªÄ¬ÈÏ±³¾°É«
+					e.getComponent().setBackground(PanelBackground);	//æ”¹ä¸ºé»˜è®¤èƒŒæ™¯è‰²
 				}
 				
 				@Override
 				public void mouseClicked(MouseEvent e)
 				{
-					JPanel jp = (JPanel)((JPanel)e.getComponent()).getComponent(1); //»ñÈ¡×°ÔØ¶ÔÓ¦idµÄpanel
-					e.getComponent().setBackground(PanelClick);	//¸ÄÎªµ¥»÷Ê±µÄÇ¿µ÷É«
-					if(e.getClickCount() == 2)	//Ë«»÷´ò¿ªÁÄÌì¿ò
+					JPanel jp = (JPanel)((JPanel)e.getComponent()).getComponent(1); //è·å–è£…è½½å¯¹åº”idçš„panel
+					e.getComponent().setBackground(PanelClick);	//æ”¹ä¸ºå•å‡»æ—¶çš„å¼ºè°ƒè‰²
+					if(e.getClickCount() == 2)	//åŒå‡»æ‰“å¼€èŠå¤©æ¡†
 					{
-						System.out.println("Ë«»÷£¡");
-						String id = ((JLabel)jp.getComponent(2)).getText();	//»ñÈ¡id
+						System.out.println("åŒå‡»ï¼");
+						String id = ((JLabel)jp.getComponent(2)).getText();	//è·å–id
 						System.out.println("id:" + id);
 						createChatFrame(friendMap.get(id));
 					}
@@ -217,14 +217,14 @@ public class MainFrame extends JFrame
 	}
 	
 	/**
-	 * µ±ÓÃ»§¹Ø±ÕÖ÷½çÃæÊ±ÌáÊ¾ÊÇ·ñÍË³ö¿Í»§¶Ë
+	 * å½“ç”¨æˆ·å…³é—­ä¸»ç•Œé¢æ—¶æç¤ºæ˜¯å¦é€€å‡ºå®¢æˆ·ç«¯
 	 */
 	public void windowClosingPerformed()
 	{
-		int result = JOptionPane.showConfirmDialog(this, "È·¶¨ÍË³ö¿Í»§¶Ë£¿");
+		int result = JOptionPane.showConfirmDialog(this, "ç¡®å®šé€€å‡ºå®¢æˆ·ç«¯ï¼Ÿ");
 		if(result == JOptionPane.YES_OPTION)
 		{
-			//¸ø·şÎñÆ÷·¢ËÍÍË³öÏûÏ¢
+			//ç»™æœåŠ¡å™¨å‘é€é€€å‡ºæ¶ˆæ¯
 			String xml = String.format("<close id=\"%s\"/>", this.id);
 			OutputStream out;
 			try
@@ -235,7 +235,7 @@ public class MainFrame extends JFrame
 			}
 			catch (IOException e)
 			{
-				showError("Óë·şÎñÆ÷¶Ï¿ªÁ¬½Ó£¡");
+				showError("ä¸æœåŠ¡å™¨æ–­å¼€è¿æ¥ï¼");
 			}
 			System.exit(0);
 		}
@@ -265,7 +265,7 @@ public class MainFrame extends JFrame
 	}
 	
 	/**
-	 * »ñÈ¡Ö¸¶¨idÓÃ»§µÄÁÄÌì¿ò£¬Èô´ËChatFrame²»´æÔÚ£¬Ôò·µ»Ønull
+	 * è·å–æŒ‡å®šidç”¨æˆ·çš„èŠå¤©æ¡†ï¼Œè‹¥æ­¤ChatFrameä¸å­˜åœ¨ï¼Œåˆ™è¿”å›null
 	 * @param id
 	 * @return
 	 */
@@ -275,7 +275,7 @@ public class MainFrame extends JFrame
 	}
 
 	/**
-	 * ´ÓÔÚÏßÓÃ»§ÁĞ±íÖĞÉ¾³ıÌØ¶¨idµÄÓÃ»§£¬°Ñ¸ÃÓÃ»§µÄonline×´Ì¬ÉèÎªfalse²¢¸üĞÂ½çÃæ
+	 * ä»åœ¨çº¿ç”¨æˆ·åˆ—è¡¨ä¸­åˆ é™¤ç‰¹å®šidçš„ç”¨æˆ·ï¼ŒæŠŠè¯¥ç”¨æˆ·çš„onlineçŠ¶æ€è®¾ä¸ºfalseå¹¶æ›´æ–°ç•Œé¢
 	 * @param id
 	 */
 	public void removeOnlineUser(String id)
@@ -286,8 +286,8 @@ public class MainFrame extends JFrame
 			if(friendPanel[i] == null) break;
 			if(friendPanel[i].id.equals(id))
 			{
-				System.out.println("id:" + id + "ºÃÓÑÀëÏß");
-				friendPanel[i].statusLabel.setText("ÀëÏß");
+				System.out.println("id:" + id + "å¥½å‹ç¦»çº¿");
+				friendPanel[i].statusLabel.setText("ç¦»çº¿");
 				break;
 			}
 		}
@@ -296,7 +296,7 @@ public class MainFrame extends JFrame
 	}
 	
 	/**
-	 * ĞÂÔöÔÚÏßÓÃ»§µ½ÓÃ»§ÁĞ±íÖĞ£¬°Ñ¸ÃÓÃ»§µÄonline×´Ì¬ÉèÎªtrue,²¢¸üĞÂ½çÃæ
+	 * æ–°å¢åœ¨çº¿ç”¨æˆ·åˆ°ç”¨æˆ·åˆ—è¡¨ä¸­ï¼ŒæŠŠè¯¥ç”¨æˆ·çš„onlineçŠ¶æ€è®¾ä¸ºtrue,å¹¶æ›´æ–°ç•Œé¢
 	 * @param id
 	 */
 	public void addOnlineUser(String id)
@@ -307,7 +307,7 @@ public class MainFrame extends JFrame
 			if(friendPanel[i] == null) break;
 			if(id.equals(friendPanel[i].id))
 			{
-				friendPanel[i].statusLabel.setText("ÔÚÏß");
+				friendPanel[i].statusLabel.setText("åœ¨çº¿");
 			}
 		}
 		
@@ -315,7 +315,7 @@ public class MainFrame extends JFrame
 	}
 	
 	/**
-	 * ³õÊ¼»¯ÔÚÏßÓÃ»§ÁĞ±í£¬²¢°Ñ¶ÔÓ¦µÄÔÚÏßÓÃ»§µÄonline×´Ì¬ÉèÎªtrue
+	 * åˆå§‹åŒ–åœ¨çº¿ç”¨æˆ·åˆ—è¡¨ï¼Œå¹¶æŠŠå¯¹åº”çš„åœ¨çº¿ç”¨æˆ·çš„onlineçŠ¶æ€è®¾ä¸ºtrue
 	 * @param ids
 	 */
 	public void initOnlineUser(String[] ids)
@@ -328,7 +328,7 @@ public class MainFrame extends JFrame
 				if(friendPanel[j] == null) break;
 				if (friendPanel[j].id.equals(ids[i]))
 				{
-					friendPanel[j].statusLabel.setText("ÔÚÏß");
+					friendPanel[j].statusLabel.setText("åœ¨çº¿");
 					break;
 				}
 			}
@@ -342,7 +342,7 @@ public class MainFrame extends JFrame
 	}
 
 	/**
-	 * Í¨¹ıid´ÓfrinedMapÀï»ñÈ¡Friend¶ÔÏó
+	 * é€šè¿‡idä»frinedMapé‡Œè·å–Friendå¯¹è±¡
 	 * @param id
 	 * @return
 	 */
@@ -352,7 +352,7 @@ public class MainFrame extends JFrame
 	}
 	
 	/**
-	 * »ñÈ¡¿Í»§¶Ëµ½·şÎñ¶ËµÄÊä³öÁ÷
+	 * è·å–å®¢æˆ·ç«¯åˆ°æœåŠ¡ç«¯çš„è¾“å‡ºæµ
 	 * @return
 	 * @throws IOException
 	 */
@@ -362,7 +362,7 @@ public class MainFrame extends JFrame
 	}
 	
 	/**
-	 * »ñÈ¡id¶ÔÓ¦µÄºÃÓÑµÄÃæ°å
+	 * è·å–idå¯¹åº”çš„å¥½å‹çš„é¢æ¿
 	 * @param id
 	 * @return 
 	 */

@@ -28,7 +28,7 @@ public class SendMsgThread extends Thread
 		}
 		catch (IOException e)
 		{
-			JOptionPane.showMessageDialog(server, "·¢ËÍÏûÏ¢Ê§°Ü");
+			JOptionPane.showMessageDialog(server, "å‘é€æ¶ˆæ¯å¤±è´¥");
 			return;
 		}
 	}

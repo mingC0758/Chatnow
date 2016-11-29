@@ -4,16 +4,16 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Í¨ÓÃÀà£¬°ü×°ÁËºÜ¶àÊµÓÃ·½·¨£¬ºÍÅäÖÃ
+ * é€šç”¨ç±»ï¼ŒåŒ…è£…äº†å¾ˆå¤šå®ç”¨æ–¹æ³•ï¼Œå’Œé…ç½®
  * @author mingC
  *
  */
 public final class Util
 {
-	public final static int MAXUSERNUM = 20;	//×î´óÓÃ»§Êı
-	public final static String ClientImagePath = "./resources/ImageResources/";	//×î´óÓÃ»§Êı
+	public final static int MAXUSERNUM = 20;	//æœ€å¤§ç”¨æˆ·æ•°
+	public final static String ClientImagePath = "./resources/ImageResources/";	//æœ€å¤§ç”¨æˆ·æ•°
 	/**
-	 * ÅĞ¶ÏstrÊÇ·ñÊÇ´¿Êı×Ö
+	 * åˆ¤æ–­stræ˜¯å¦æ˜¯çº¯æ•°å­—
 	 * @param str
 	 * @return
 	 */
@@ -31,7 +31,7 @@ public final class Util
 	}
 	
 	/**
-	 * ÅĞ¶Ï¶Ë¿ÚÊÇ·ñºÏ·¨
+	 * åˆ¤æ–­ç«¯å£æ˜¯å¦åˆæ³•
 	 * @param port
 	 * @return
 	 */
@@ -49,7 +49,7 @@ public final class Util
 	}
 	
 	/**
-	 * ´ÓÊäÈëÁ÷ÖĞ¶ÁÈ¡×Ö·û´®ÄÚÈİ
+	 * ä»è¾“å…¥æµä¸­è¯»å–å­—ç¬¦ä¸²å†…å®¹
 	 * @param in
 	 * @return
 	 * @throws IOException

@@ -18,11 +18,11 @@ public class test
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, InterruptedException
 	{
 		JFrame jf = new JFrame();
-		String str = "½ÓÊÜµ½À´×Ô "+"µÄÏûÏ¢£¬ÊÇ·ñ²é¿´£¿";
+		String str = "æ¥å—åˆ°æ¥è‡ª "+"çš„æ¶ˆæ¯ï¼Œæ˜¯å¦æŸ¥çœ‹ï¼Ÿ";
 		Icon icon = new ImageIcon(Util.ClientImagePath + "Image1.jpg");
-		String[] options = {"²é¿´", "ºöÂÔ", "È·ÈÏ"};	//¶Ô»°¿òÑ¡Ïî
-		//µ¯³ö¶Ô»°¿òÌáĞÑ
-		int result = JOptionPane.showOptionDialog(jf, str, "ĞÂÏûÏ¢", JOptionPane.INFORMATION_MESSAGE, (Integer) null, icon, options, "²é¿´");
+		String[] options = {"æŸ¥çœ‹", "å¿½ç•¥", "ç¡®è®¤"};	//å¯¹è¯æ¡†é€‰é¡¹
+		//å¼¹å‡ºå¯¹è¯æ¡†æé†’
+		int result = JOptionPane.showOptionDialog(jf, str, "æ–°æ¶ˆæ¯", JOptionPane.INFORMATION_MESSAGE, (Integer) null, icon, options, "æŸ¥çœ‹");
 		if(result == 0)
 		{
 			System.out.println("YES");

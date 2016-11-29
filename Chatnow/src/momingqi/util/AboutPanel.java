@@ -18,9 +18,9 @@ public class AboutPanel extends JPanel
 		Font font = new Font("Dialog.plain", Font.PLAIN, 16);
 		Icon icon = new ImageIcon("./server_resources/author.jpg");
 		JPanel msgPanel = new JPanel(new GridLayout(4, 1));
-		JLabel label1 = new JLabel("×÷Õß£ºÄªÃúÆå");
-		JLabel label2 = new JLabel("Ñ§ºÅ£º3115005325");
-		JLabel label3 = new JLabel("´´×÷Ê±¼ä£º2016/11/25");
+		JLabel label1 = new JLabel("ä½œè€…ï¼šè«é“­æ£‹");
+		JLabel label2 = new JLabel("å­¦å·ï¼š3115005325");
+		JLabel label3 = new JLabel("åˆ›ä½œæ—¶é—´ï¼š2016/11/25");
 		label1.setFont(font);
 		label2.setFont(font);
 		label3.setFont(font);
@@ -29,6 +29,6 @@ public class AboutPanel extends JPanel
 		msgPanel.add(label3);
 		this.add(msgPanel);
 		this.add(new JLabel(icon));
-		this.setBorder(BorderFactory.createTitledBorder("×÷ÕßĞÅÏ¢"));
+		this.setBorder(BorderFactory.createTitledBorder("ä½œè€…ä¿¡æ¯"));
 	}
 }

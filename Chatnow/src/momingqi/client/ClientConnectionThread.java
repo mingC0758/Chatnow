@@ -27,35 +27,35 @@ public class ClientConnectionThread extends Thread
 			client.socket = new Socket(host, Integer.parseInt(port));
 			String id = client.idTextField.getText();
 			String pwd = client.pwdTextField.getText();
-			//¹¹½¨xml
+			//æ„å»ºxml
 			String login_xml = XMLUtil.constructLoginXML(id, pwd);
 			System.out.println(login_xml);
 			
 			client.socket.getOutputStream().write(login_xml.getBytes());
-			//½ÓÊÕÑéÖ¤½á¹û
+			//æ¥æ”¶éªŒè¯ç»“æœ
 			client.in = client.socket.getInputStream();
 			String result = Util.readFromInputStream(client.in);
-			System.out.println("½ÓÊÕµ½µÇÂ½½á¹û£º" + result);
+			System.out.println("æ¥æ”¶åˆ°ç™»é™†ç»“æœï¼š" + result);
 			
-			if(result.equals("succeed"))	//µÇÂ½³É¹¦
+			if(result.equals("succeed"))	//ç™»é™†æˆåŠŸ
 			{
-				System.out.println("µÇÂ½³É¹¦");
+				System.out.println("ç™»é™†æˆåŠŸ");
 				MainFrame mf = new MainFrame(id, client.socket);
 				client.setVisible(false);
 				ReceiveMsgThread rmt = new ReceiveMsgThread(mf, client.in);
 				rmt.start();
 			}
-			else if(result.equals("error"))	//µÇÂ½Ê§°Ü
+			else if(result.equals("error"))	//ç™»é™†å¤±è´¥
 			{
-				client.tipLabel.setText("ÕË»§»òÃÜÂë´íÎó£¡");
+				client.tipLabel.setText("è´¦æˆ·æˆ–å¯†ç é”™è¯¯ï¼");
 				//client.socket.close();
 				return;
 			}
 		}
 		catch (Exception e)
 		{
-			System.out.println("Á¬½ÓÊ§°Ü!");
-			client.tipLabel.setText("Á¬½Ó·şÎñÆ÷Ê§°Ü£¡Çë¼ì²éÍøÂç»ò·şÎñÆ÷ÅäÖÃÊÇ·ñÕıÈ·¡£");
+			System.out.println("è¿æ¥å¤±è´¥!");
+			client.tipLabel.setText("è¿æ¥æœåŠ¡å™¨å¤±è´¥ï¼è¯·æ£€æŸ¥ç½‘ç»œæˆ–æœåŠ¡å™¨é…ç½®æ˜¯å¦æ­£ç¡®ã€‚");
 			return;
 		}
 	}

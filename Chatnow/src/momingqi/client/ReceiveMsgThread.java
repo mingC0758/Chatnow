@@ -36,13 +36,13 @@ public class ReceiveMsgThread extends Thread
 		{
 			try
 			{
-				msg = Util.readFromInputStream(in);	//¶ÂÈû
-				System.out.println("½ÓÊÕµ½ÏûÏ¢:" + msg);
+				msg = Util.readFromInputStream(in);	//å µå¡
+				System.out.println("æ¥æ”¶åˆ°æ¶ˆæ¯:" + msg);
 				parseMsg(msg);
 			}
 			catch (IOException e)
 			{
-				JOptionPane.showMessageDialog(mf, "Óë·şÎñÆ÷¶Ï¿ªÁ¬½Ó£¡");//¶ÏÏß´¦Àí
+				JOptionPane.showMessageDialog(mf, "ä¸æœåŠ¡å™¨æ–­å¼€è¿æ¥ï¼");//æ–­çº¿å¤„ç†
 				break;
 			}
 			
@@ -63,8 +63,8 @@ public class ReceiveMsgThread extends Thread
 			{
 				boolean isUserList = false;
 				boolean isMsg = false;
-				String msg_id;	//·¢ËÍÕßµÄid
-				String msg;		//ÁÄÌìÏûÏ¢
+				String msg_id;	//å‘é€è€…çš„id
+				String msg;		//èŠå¤©æ¶ˆæ¯
 				String[] ids = new String[20];
 				int id_index = 0;
 				
@@ -72,7 +72,7 @@ public class ReceiveMsgThread extends Thread
 				public void startElement(String uri, String localName,
 						String qName, Attributes attributes) throws SAXException
 				{
-					if(qName.equals("addOnlineUser"))	//ĞÂÔöÔÚÏßÓÃ»§
+					if(qName.equals("addOnlineUser"))	//æ–°å¢åœ¨çº¿ç”¨æˆ·
 					{
 						mf.addOnlineUser(attributes.getValue("id"));
 					}
@@ -103,7 +103,7 @@ public class ReceiveMsgThread extends Thread
 				{
 					if(isMsg == true)
 					{
-						//»ñÈ¡ÏûÏ¢
+						//è·å–æ¶ˆæ¯
 						msg = new String(ch, start, length);
 					}
 				}
@@ -115,33 +115,33 @@ public class ReceiveMsgThread extends Thread
 					if(qName.equals("userlist"))
 					{
 						isUserList = false;
-						System.out.println("³õÊ¼»¯ÔÚÏßÁĞ±í");
+						System.out.println("åˆå§‹åŒ–åœ¨çº¿åˆ—è¡¨");
 						mf.initOnlineUser(ids);
 					}
 					else if(qName.equals("msg"))
 					{
 						isMsg = false;
 						ChatFrame cf = mf.getChatFrame(msg_id);
-						if(cf == null)	//´°¿ÚÃ»ÓĞ´ò¿ª
+						if(cf == null)	//çª—å£æ²¡æœ‰æ‰“å¼€
 						{
-							//Ñ¯ÎÊÓÃ»§ÊÇ·ñ´ò¿ªÁÄÌì´°¿Ú
-							Friend f = mf.getFriend(msg_id);	//»ñµÃ·¢ËÍÕßµÄFriend¶ÔÏó
-							String str = "½ÓÊÜµ½À´×Ô " + f.nickname + "µÄÏûÏ¢£¬ÊÇ·ñ²é¿´£¿";
+							//è¯¢é—®ç”¨æˆ·æ˜¯å¦æ‰“å¼€èŠå¤©çª—å£
+							Friend f = mf.getFriend(msg_id);	//è·å¾—å‘é€è€…çš„Friendå¯¹è±¡
+							String str = "æ¥å—åˆ°æ¥è‡ª " + f.nickname + "çš„æ¶ˆæ¯ï¼Œæ˜¯å¦æŸ¥çœ‹ï¼Ÿ";
 							Icon icon = new ImageIcon(Util.ClientImagePath + f.photo);
-							String[] options = {"²é¿´", "ºöÂÔ"};	//¶Ô»°¿òÑ¡Ïî
-							//µ¯³ö¶Ô»°¿òÌáĞÑÓÃ»§ÊÇ·ñ´ò¿ªÁÄÌì´°¿Ú
-							int result = JOptionPane.showOptionDialog(mf, str, "ĞÂÏûÏ¢",
-									JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, options, "²é¿´");
+							String[] options = {"æŸ¥çœ‹", "å¿½ç•¥"};	//å¯¹è¯æ¡†é€‰é¡¹
+							//å¼¹å‡ºå¯¹è¯æ¡†æé†’ç”¨æˆ·æ˜¯å¦æ‰“å¼€èŠå¤©çª—å£
+							int result = JOptionPane.showOptionDialog(mf, str, "æ–°æ¶ˆæ¯",
+									JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, options, "æŸ¥çœ‹");
 							if (result == JOptionPane.YES_OPTION)
 							{
 								cf = mf.createChatFrame(f);
-								cf.setMsgText(msg);		//ÏÔÊ¾ÏûÏ¢
-								cf.logMsg(msg);	//¼ÇÂ¼ÏûÏ¢
+								cf.setMsgText(msg);		//æ˜¾ç¤ºæ¶ˆæ¯
+								cf.logMsg(msg);	//è®°å½•æ¶ˆæ¯
 							}
 						}
 						else
 						{
-							cf.setMsgText(msg);	//ÏÔÊ¾ÁÄÌìĞÅÏ¢
+							cf.setMsgText(msg);	//æ˜¾ç¤ºèŠå¤©ä¿¡æ¯
 						}
 						
 					}
