@@ -12,11 +12,14 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+
+import momingqi.util.Util;
 
 public class ChatFrame extends JFrame
 {
@@ -42,8 +45,18 @@ public class ChatFrame extends JFrame
 		inputArea = new JTextArea(20, 10);
 		tipLabel = new JLabel("  ");
 		
-		JPanel infoPanel = mf.getFriendPanel(f.id);
-		JPanel buttonPanel = new JPanel(new GridLayout(1,2));
+		JPanel buttonPanel = new JPanel(new GridLayout(1,2));	//按钮面板
+		JPanel infoPanel = new JPanel();	//对方的个人信息面板，包括id，nickname和头像
+		
+		JLabel nicknameLabel = new JLabel(f.nickname);
+		JLabel idLabel = new JLabel(f.id);
+		JLabel photoLabel = new JLabel(new ImageIcon(Util.ClientImagePath + f.photo));
+		JPanel idnamePanel = new JPanel(new GridLayout(2,1));
+		idnamePanel.add(idLabel);
+		idnamePanel.add(nicknameLabel);
+		
+		infoPanel.add(photoLabel);
+		infoPanel.add(idnamePanel);
 		
 		JButton sendButton = new JButton("发送");
 		JButton resetButton = new JButton("重置");
@@ -86,6 +99,7 @@ public class ChatFrame extends JFrame
 		this.add(inputArea);
 		this.add(buttonPanel);
 		this.setTitle("正在与" + f.nickname + "聊天");
+		this.pack();
 		this.setVisible(true);
 		this.addWindowListener(new WindowAdapter()
 		{

@@ -1,3 +1,4 @@
+import java.awt.Dialog;
 import java.io.IOException;
 
 import javax.swing.Icon;
@@ -22,7 +23,7 @@ public class test
 		Icon icon = new ImageIcon(Util.ClientImagePath + "Image1.jpg");
 		String[] options = {"查看", "忽略", "确认"};	//对话框选项
 		//弹出对话框提醒
-		int result = JOptionPane.showOptionDialog(jf, str, "新消息", JOptionPane.INFORMATION_MESSAGE, (Integer) null, icon, options, "查看");
+		int result = JOptionPane.showOptionDialog(jf, str, "新消息", JOptionPane.INFORMATION_MESSAGE, JOptionPane.YES_NO_OPTION, icon, options, "查看");
 		if(result == 0)
 		{
 			System.out.println("YES");

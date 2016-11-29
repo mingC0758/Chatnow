@@ -132,7 +132,7 @@ public class ReceiveMsgThread extends Thread
 							//弹出对话框提醒用户是否打开聊天窗口
 							int result = JOptionPane.showOptionDialog(mf, str, "新消息",
 									JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, icon, options, "查看");
-							if (result == JOptionPane.YES_OPTION)
+							if (result == 0)
 							{
 								cf = mf.createChatFrame(f);
 								cf.setMsgText(msg);		//显示消息

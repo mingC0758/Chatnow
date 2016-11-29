@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
@@ -64,8 +63,8 @@ public class Server extends JFrame
 			}
 
 		});
-		Label label1 = new Label("  服务器状态:");
-		Label label2 = new Label("         端口号:");
+		JLabel label1 = new JLabel("  服务器状态:");//  服务器状态:
+		JLabel label2 = new JLabel("         端口号:");//
 		/**
 		 * 设置字体
 		 */
@@ -180,6 +179,7 @@ public class Server extends JFrame
 		
 		for (User u : userList)
 			{
+				if(u == user) break;	//不发给加入的用户
 				try
 				{
 					if(u.id.equals(user.id)) continue;
@@ -200,6 +200,7 @@ public class Server extends JFrame
 		String xml = String.format("<removeOnlineUser id=\"%s\"/>", user.id);
 		for (User u: userList)	//向所有用户发送移除在线用户消息
 		{
+			if(u == user) continue;	//不发给退出的用户
 			try
 			{
 				u.socket.getOutputStream().write(xml.getBytes());
