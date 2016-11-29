@@ -12,6 +12,9 @@ public final class Util
 {
 	public final static int MAXUSERNUM = 20;	//最大用户数
 	public final static String ClientImagePath = "./resources/ImageResources/";	//最大用户数
+	public final static String ClientResourcesPath = "./resources/";	//最大用户数
+	public final static String ServerResourcesPath = "./server_resources/";
+	
 	/**
 	 * 判断str是否是纯数字
 	 * @param str

@@ -25,6 +25,7 @@ public class SendMsgThread extends Thread
 		try
 		{
 			out.write(msg.getBytes());
+			System.out.println("服务端发出消息:" + msg);
 		}
 		catch (IOException e)
 		{

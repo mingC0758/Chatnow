@@ -1,8 +1,12 @@
 package momingqi.client;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -12,7 +16,12 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import momingqi.util.Util;
+import momingqi.util.XMLUtil;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -94,6 +103,52 @@ public class ReceiveMsgThread extends Thread
 					{
 						isMsg = true;
 						msg_id = attributes.getValue("id");
+					}
+					else if(qName.equals("addfriend"))
+					{
+						final String add_id = attributes.getValue("id");
+						final String add_nickname = attributes.getValue("nickname");
+						final String add_photo = attributes.getValue("photo");
+						String show = "来自id:" + add_id + "的用户请求添加您为好友，是否同意？";
+						int result = 
+								JOptionPane.showConfirmDialog(null, show, "请求", JOptionPane.YES_NO_OPTION);
+						if (result == JOptionPane.NO_OPTION) return;
+						new Thread()
+						{
+							public void run() 
+							{
+								try
+								{	//发送接收命令给服务器
+									OutputStream out = mf.getOutputStream();
+									out.write(("<accept id=\"" + add_id + "\"/>").getBytes());
+									out.flush();
+								}
+								catch (IOException e)
+								{
+									mf.showError("发送失败！");
+								}
+								
+							};
+						}.start();
+						//添加到friends.xml中
+						try
+						{
+							Document doc = new SAXReader().read(Util.ClientResourcesPath + "friends.xml");
+							doc.getRootElement().addAttribute("id", add_id);
+							doc.getRootElement().addAttribute("nickname", add_nickname);
+							doc.getRootElement().addAttribute("photo", add_photo);
+							XMLWriter w = new XMLWriter(new FileOutputStream(Util.ClientResourcesPath + "friends.xml"));
+							w.write(doc);
+						}
+						catch (Exception e)
+						{
+							e.printStackTrace();
+						}
+						//增加好友到friendPanel
+						Friend f = new Friend(add_id, add_nickname, add_photo);
+						mf.addFriendToPanel(f);
+						//增加到上线好友列表
+						mf.addOnlineUser(f.id);
 					}
 				}
 				

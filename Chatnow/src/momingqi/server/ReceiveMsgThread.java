@@ -5,16 +5,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import momingqi.util.Util;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import momingqi.util.Util;
 
 /**
  * 接受来自特定用户的消息(聊天消息，退出消息，增删好友消息)，并进行处理
@@ -85,6 +88,36 @@ public class ReceiveMsgThread extends Thread
 						server.removeUser(user);
 						exit = true;
 					}
+					else if(qName.equals("addfriend"))
+					{
+						String add_id = attributes.getValue("id");
+						Document doc;
+						try
+						{
+							doc = new SAXReader().read(Util.ServerResourcesPath + "users.xml");
+							Element e = (Element)doc.selectSingleNode("//[@id='" + user.id + "']");
+							String id = e.attribute("id").getValue();
+							String nickname = e.attribute("id").getValue();
+							String photo = e.attribute("id").getValue();
+							String xml = String.format("<addfriend id=\"%s\" nickname=\"%s\" photo=\"%s\">",
+									id, nickname, photo);
+							try
+							{
+								new SendMsgThread(server, user.socket.getOutputStream(), xml);
+							}
+							catch (IOException e1)
+							{
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+						catch (DocumentException e2)
+						{
+							// TODO Auto-generated catch block
+							e2.printStackTrace();
+						}
+						
+					}
 				}
 				
 				@Override
@@ -122,6 +155,7 @@ public class ReceiveMsgThread extends Thread
 									catch (IOException e1)
 									{
 										server.removeUser(user);
+										e.printStackTrace();
 									}
 
 								}

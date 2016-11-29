@@ -1,9 +1,12 @@
 package momingqi.client;
 
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -18,6 +21,7 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -43,6 +47,12 @@ public class MainFrame extends JFrame
 	private Map<String, Friend> friendMap;			//好友id，Friend对象键值对
 	private FriendPanel[] friendPanel;				//装有每一个好友面板的数组
 	private Map<String, ChatFrame> chatFrameMap;	//好友id，聊天窗口键值对
+	
+	final Color PanelHighlight = Color.lightGray;
+	final Color PanelBackground = Color.GRAY;
+	final Color PanelClick = Color.yellow;
+	final Font BoldFont = new Font("Dialog.plain", Font.BOLD, 18);
+	final Font PlainFont = new Font("Dialog.plain", Font.PLAIN, 15);
 	
 	public MainFrame(String id, Socket socket)
 	{
@@ -82,40 +92,11 @@ public class MainFrame extends JFrame
 			e.printStackTrace();
 		}
 		
-//		new Thread()
-//		{
-//			/**
-//			 * 姣�10绉掕緭鍑轰竴娆″ソ鍙嬬姸鎬侊紝鐢ㄤ簬璋冭瘯銆�
-//			 */
-//			public void run()
-//			{
-//				while (true)
-//				{
-//					try
-//					{
-//						Thread.sleep(10000);
-//					}
-//					catch (InterruptedException e)
-//					{
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					for (Friend f : friendMap.values())
-//					{
-//						System.out.println("id:" + f.id + " 状态" + f.online);
-//					}
-//				}
-//			}
-//		}.start();
 	}
 
 	private void initComponent()
 	{
-		final Color PanelHighlight = Color.lightGray;
-		final Color PanelBackground = Color.GRAY;
-		final Color PanelClick = Color.yellow;
-		final Font BoldFont = new Font("Dialog.plain", Font.BOLD, 18);
-		final Font PlainFont = new Font("Dialog.plain", Font.PLAIN, 15);
+		
 		
 		Icon icon = new ImageIcon("resources/ImageResources/" + photo);
 		System.out.println(icon);
@@ -136,86 +117,26 @@ public class MainFrame extends JFrame
 		userPanel.add(new JLabel(icon));	//澶村儚鏍囩
 		userPanel.add(rightPanel);
 		
-		JPanel listPanel = new JPanel(new GridLayout(friendMap.size(), 1, 3, 3));//鐢ㄦ埛鍒楄〃闈㈡澘
+		JPanel listPanel = new JPanel(new GridLayout(friendMap.size(), 1, 3, 3));//
 		listPanel.setBorder(BorderFactory.createTitledBorder("好友列表"));	
 		friendPanel = new FriendPanel[Util.MAXUSERNUM];
 		int i = 0;
-		JPanel infoPanel;
-		JLabel onlineLabel;
-		/***
-		 * 涓烘瘡涓�涓ソ鍙嬪垱寤轰竴涓潰鏉挎潵瑁呰浇锛氬ご鍍廘abel锛宨nfoLabel锛坣ickname,status, id锛�
-		 */
+		
 		for(Friend f: friendMap.values())
 		{
-			friendPanel[i] = new FriendPanel();
-			friendPanel[i].id = f.id;	//封装id标签
-			friendPanel[i].setBorder(BorderFactory.createLineBorder(Color.BLUE));
-			infoPanel = new JPanel((new GridLayout(2,1)));
-			//昵称
-			label = new JLabel(f.nickname);
-			label.setFont(BoldFont);
-			infoPanel.add(label);
-			//在线状态
-			onlineLabel = new JLabel("  离线");
-			onlineLabel.setFont(PlainFont);
-			infoPanel.add(onlineLabel);
-			friendPanel[i].statusLabel = onlineLabel;	//封装在线状态标签
-			//id
-			label = new JLabel(f.id);
-			label.setFont(PlainFont);
-			infoPanel.add(label);
-			//包装在friendPanel数组里
-			friendPanel[i].add(new JLabel(
-					new ImageIcon("resources/ImageResources/" + f.photo)));
-			friendPanel[i].add(infoPanel);
-			friendPanel[i].addMouseListener(new MouseAdapter()	//鐩戝惉闈㈡澘
-			{
-				@Override
-				public void mouseEntered(MouseEvent e)	//鼠标进入时设置为明亮色
-				{
-					e.getComponent().setBackground(PanelHighlight);
-				}
-				
-				@Override
-				public void mouseExited(MouseEvent e)
-				{
-					e.getComponent().setBackground(PanelBackground);	//鼠标离开时将面板设置为背景色
-				}
-				
-				@Override
-				public void mouseClicked(MouseEvent e)
-				{
-					e.getComponent().setBackground(PanelClick); // 设置为特定颜色
-					if (e.getClickCount() == 2) // 双击打开聊天窗口
-					{
-						JPanel jp = (JPanel) ((JPanel) e.getComponent())
-								.getComponent(1); // 获得包含id标签的面板
-						String id = ((JLabel) jp.getComponent(2)).getText(); // 获得id
-						ChatFrame cf = chatFrameMap.get(id); // 获取聊天框
-						if (cf == null) // 若聊天框不存在则创建
-						{
-							// 创建聊天面板并添加到chatpanelmap中
-							createChatFrame(friendMap.get(id));
-						}
-						else
-						{
-							cf.requestFocus();
-						}
-						e.getComponent().setBackground(PanelBackground);
-					}
-				}
-
-			});
-			
+			friendPanel[i] = createNewPanel(f);
 			listPanel.add(friendPanel[i]);
 			i++;
 		}
+		JButton addButton = new JButton("添加好友");	//添加好友按钮
+		addButton.addActionListener(new AddFriendHandler(this));
 		
 		this.setLayout(new FlowLayout());
 		this.add(userPanel);
 		this.add(listPanel);
+		this.add(addButton);
 		this.setVisible(true);
-		this.pack();
+		this.setSize(400, 500);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter()
 		{
@@ -227,6 +148,75 @@ public class MainFrame extends JFrame
 		});
 	}
 	
+	/**
+	 * 创建一个好友面板并返回
+	 * @param f
+	 * @return
+	 */
+	private FriendPanel createNewPanel(Friend f)
+	{
+		FriendPanel newPanel = new FriendPanel();
+		newPanel.id = f.id;	//封装id标签
+		newPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+		JPanel infoPanel = new JPanel((new GridLayout(2,1)));
+		//昵称
+		JLabel label = new JLabel(f.nickname);
+		label.setFont(BoldFont);
+		infoPanel.add(label);
+		//在线状态
+		JLabel onlineLabel = new JLabel("  离线");
+		onlineLabel.setFont(PlainFont);
+		infoPanel.add(onlineLabel);
+		newPanel.statusLabel = onlineLabel;	//封装在线状态标签
+		//id
+		label = new JLabel(f.id);
+		label.setFont(PlainFont);
+		infoPanel.add(label);
+		//包装在friendPanel数组里
+		newPanel.add(new JLabel(
+				new ImageIcon("resources/ImageResources/" + f.photo)));
+		newPanel.add(infoPanel);
+		newPanel.addMouseListener(new MouseAdapter()	//鐩戝惉闈㈡澘
+		{
+			@Override
+			public void mouseEntered(MouseEvent e)	//鼠标进入时设置为明亮色
+			{
+				e.getComponent().setBackground(PanelHighlight);
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				e.getComponent().setBackground(PanelBackground);	//鼠标离开时将面板设置为背景色
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				e.getComponent().setBackground(PanelClick); // 设置为特定颜色
+				if (e.getClickCount() == 2) // 双击打开聊天窗口
+				{
+					JPanel jp = (JPanel) ((JPanel) e.getComponent())
+							.getComponent(1); // 获得包含id标签的面板
+					String id = ((JLabel) jp.getComponent(2)).getText(); // 获得id
+					ChatFrame cf = chatFrameMap.get(id); // 获取聊天框
+					if (cf == null) // 若聊天框不存在则创建
+					{
+						// 创建聊天面板并添加到chatpanelmap中
+						createChatFrame(friendMap.get(id));
+					}
+					else
+					{
+						cf.requestFocus();
+					}
+					e.getComponent().setBackground(PanelBackground);
+				}
+			}
+
+		});
+		return newPanel;
+	}
+
 	/**
 	 * 当窗口关闭时调用此方法
 	 */
@@ -256,7 +246,11 @@ public class MainFrame extends JFrame
 		}
 	}
 	
-	private void showError(String error)
+	/**
+	 * 弹出提示框显示错误信息
+	 * @param error
+	 */
+	public void showError(String error)
 	{
 		JOptionPane.showMessageDialog(this, error);
 	}
@@ -417,6 +411,21 @@ public class MainFrame extends JFrame
 	{
 		new buildChatFrameThread(this, cf, id).start();
 		System.out.println("------------------------");
+	}
+
+	/**
+	 * 给好友面板增加好友
+	 */
+	public void addFriendToPanel(Friend f)
+	{
+		for(int i = 0; i < friendPanel.length; i++)
+		{
+			JPanel newPanel = new JPanel();
+			if(friendPanel[i] == null)
+			{
+				friendPanel[i] = createNewPanel(f);
+			}
+		}
 	}
 
 }

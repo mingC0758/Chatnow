@@ -28,6 +28,18 @@ public final class XMLUtil
 		return xml;
 	}
 	
+	/**
+	 * 构建想服务器发送的添加好友消息的xml字符串
+	 * @param id
+	 * @return
+	 */
+	public final static String constructAddFriendXML(String id)
+	{
+		String xml = String.format("<addfriend id=\"%s\">", id);
+		return xml;
+	}
+	
+	
 	/**解析登陆xml，并返回到字符串id和pwd
 	 * 
 	 * @param xml
@@ -77,6 +89,15 @@ public final class XMLUtil
 		parser.parse(xml, new FriendsXMLHandler(map));
 		return map;
 	}
+
+	public static String constructNewFriend(String id, String nickname, String photo)
+	{
+		String str = "";
+		String xml = String.format("");
+		return null;
+	}
+
+	
 }
 
 class FriendsXMLHandler extends DefaultHandler
