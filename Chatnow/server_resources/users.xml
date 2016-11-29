@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<users>
+	<user id="10001" pwd="12345" nickname="飞翔的小狗" photo="Image1.jpg"/>
+	<user id="10002" pwd="12345" nickname="我真是个好人" photo="Image2.jpg"/>
+	<user id="10003" pwd="12345" nickname="不要说话" photo="Image3.jpg"/>
+	<user id="10004" pwd="12345" nickname="麻花腾" photo="Image4.jpg"/>
+	<user id="10005" pwd="12345" nickname="老马" photo="Image5.jpg"/>
+</users>
