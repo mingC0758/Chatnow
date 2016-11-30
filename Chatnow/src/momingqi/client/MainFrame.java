@@ -13,6 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.HashMap;
@@ -368,15 +369,6 @@ public class MainFrame extends JFrame
 		return friendMap.get(id);
 	}
 	
-	/**
-	 * 获得对服务端的输出流
-	 * @return
-	 * @throws IOException
-	 */
-	public OutputStream getOutputStream() throws IOException
-	{
-		return socket.getOutputStream();
-	}
 	
 	/**
 	 * 获得id对应的好友的FriendPanel面板对象
@@ -405,16 +397,16 @@ public class MainFrame extends JFrame
 		return this.nickname;
 	}
 	
-	/**
-	 * 创建聊天框，独立创建一个线程
-	 * @param id
-	 * @param cf
-	 */
-	private void buildChatFrame(String id, ChatFrame cf)
-	{
-		new buildChatFrameThread(this, cf, id).start();
-		System.out.println("------------------------");
-	}
+//	/**
+//	 * 创建聊天框，独立创建一个线程
+//	 * @param id
+//	 * @param cf
+//	 */
+//	private void buildChatFrame(String id, ChatFrame cf)
+//	{
+//		new buildChatFrameThread(this, cf, id).start();
+//		System.out.println("------------------------");
+//	}
 
 	/**
 	 * 给好友面板增加好友
@@ -423,7 +415,6 @@ public class MainFrame extends JFrame
 	{
 		for(int i = 0; i < friendPanel.length; i++)
 		{
-			JPanel newPanel = new JPanel();
 			if(friendPanel[i] == null)
 			{
 				friendPanel[i] = createNewPanel(f);
@@ -431,30 +422,46 @@ public class MainFrame extends JFrame
 		}
 	}
 
+	/**
+	 * 获得服务端的输入流
+	 */
+	public InputStream getInputStream() throws IOException
+	{
+		return this.socket.getInputStream();
+	}
 	
+	/**
+	 * 获得对服务端的输出流
+	 * @return
+	 * @throws IOException
+	 */
+	public OutputStream getOutputStream() throws IOException
+	{
+		return socket.getOutputStream();
+	}
 
 }
 
 
-class buildChatFrameThread extends Thread
-{
-	private MainFrame mf;
-	private ChatFrame cf;
-	private String id;
-	
-	public buildChatFrameThread(MainFrame mf, ChatFrame cf, String id)
-	{
-		this.mf = mf;
-		this.cf = cf;
-		this.id = id;
-	}
-
-	@Override
-	public void run()
-	{
-		cf = mf.createChatFrame(mf.getFriend(id));
-	}
-}
+//class buildChatFrameThread extends Thread
+//{
+//	private MainFrame mf;
+//	private ChatFrame cf;
+//	private String id;
+//	
+//	public buildChatFrameThread(MainFrame mf, ChatFrame cf, String id)
+//	{
+//		this.mf = mf;
+//		this.cf = cf;
+//		this.id = id;
+//	}
+//
+//	@Override
+//	public void run()
+//	{
+//		cf = mf.createChatFrame(mf.getFriend(id));
+//	}
+//}
 
 class FriendPanel extends JPanel
 {

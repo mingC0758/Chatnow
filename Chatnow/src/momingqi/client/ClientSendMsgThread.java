@@ -11,12 +11,12 @@ import javax.swing.JOptionPane;
  * @author mingC
  *
  */
-public class SendMsgThread extends Thread
+public class ClientSendMsgThread extends Thread
 {
 	private ChatFrame cf;
 	private String msg;
 	
-	public SendMsgThread(ChatFrame cf, String msg)
+	public ClientSendMsgThread(ChatFrame cf, String msg)
 	{
 		this.cf = cf;
 		this.msg = msg;
@@ -38,7 +38,7 @@ public class SendMsgThread extends Thread
 		{
 			System.out.println("发送失败！");
 			cf.showError("发送失败！请检查网络状况。");
-			JOptionPane.showMessageDialog(cf.mf, "与服务器断开连接！请重新登陆");
+			JOptionPane.showMessageDialog(cf, "与服务器断开连接！请重新登陆");
 			return;
 		}
 	}

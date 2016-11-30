@@ -1,12 +1,10 @@
 package momingqi.client;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -16,22 +14,20 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import momingqi.util.Util;
-import momingqi.util.XMLUtil;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public class ReceiveMsgThread extends Thread
+public class ClientAcceptMsgThread extends Thread
 {
 	public MainFrame mf;
 	public InputStream in;
 	
-	public ReceiveMsgThread(MainFrame mf, InputStream in)
+	public ClientAcceptMsgThread(MainFrame mf, InputStream in)
 	{
 		this.mf = mf;
 		this.in = in;

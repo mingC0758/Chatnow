@@ -90,7 +90,6 @@ public class Server extends JFrame
 		logTextArea.setLineWrap(true); 	//自动换行
 		logTextArea.setWrapStyleWord(true);
 		JScrollPane logscrollpane = new JScrollPane(logTextArea);	//服务器运行记录输出面板
-		logscrollpane.setOpaque(true);
 		logscrollpane.setAutoscrolls(true);
 		JPanel logPanel = new JPanel();
 		logPanel.add(logscrollpane);

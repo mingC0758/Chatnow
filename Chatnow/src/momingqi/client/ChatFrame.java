@@ -12,6 +12,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.Date;
@@ -152,7 +153,7 @@ public class ChatFrame extends JFrame
 		//构建xml
 		String msg_xml = String.format("<chatmsg receiver=\"%s\">%s</chatmsg>", f.id, msg);
 		//创建发送消息线程
-		SendMsgThread smt = new SendMsgThread(this, msg_xml);
+		ClientSendMsgThread smt = new ClientSendMsgThread(this, msg_xml);
 		smt.start();
 		//清空发送区
 		inputField.setText("");	
@@ -184,11 +185,7 @@ public class ChatFrame extends JFrame
 		
 	}
 	
-	public OutputStream getOutputStream() throws IOException
-	{
-		return mf.getOutputStream();
-	}
-
+	
 	/**
 	 * 显示错误信息
 	 * @param string
@@ -202,4 +199,22 @@ public class ChatFrame extends JFrame
 	{
 		
 	}
+
+	/**
+	 * 获得服务端的输出流
+	 */
+	public OutputStream getOutputStream() throws IOException
+	{
+		return mf.getOutputStream();
+	}
+
+	/**
+	 * 获得服务端的输入流
+	 */
+	public InputStream getInputStream() throws IOException
+	{
+		return mf.getInputStream();
+	}
+
+	
 }

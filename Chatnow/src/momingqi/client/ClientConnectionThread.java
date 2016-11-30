@@ -42,7 +42,7 @@ public class ClientConnectionThread extends Thread
 				System.out.println("登陆成功");
 				MainFrame mf = new MainFrame(id, client.socket);
 				client.setVisible(false);
-				ReceiveMsgThread rmt = new ReceiveMsgThread(mf, client.in);
+				ClientAcceptMsgThread rmt = new ClientAcceptMsgThread(mf, client.in);
 				rmt.start();
 			}
 			else if(result.equals("error"))	//登陆失败
