@@ -46,14 +46,14 @@ public class ReceiveMsgThread extends Thread
 			try
 			{
 				String msg = Util.readFromInputStream(in);	//方法堵塞
-				System.out.println("服务端接受到来自id：" + user.id + "的消息：" + msg);
+				server.log("accept id：" + user.id + " " + msg);
 				parseMsg(msg);
 			}
 			catch (Exception e)
 			{
 				server.removeUser(user);
-				System.out.println("有用户非正常退出，id：" + user.id);
-				break;	//退出循环，结束接收消息
+				server.log("Unnomally Exit ! id：" + user.id);
+				return;	//退出循环，结束接收消息
 			}
 		}
 	}
@@ -129,7 +129,7 @@ public class ReceiveMsgThread extends Thread
 						String msg = new String(ch, start, length);
 						String xml = String.format("<msg id=\"%s\">%s</msg>",
 								user.id, msg);
-						for (User u : server.userList)
+						for (User u : server.onlineList)
 						{
 							if (u.id.equals(msgReceiverID))
 							{

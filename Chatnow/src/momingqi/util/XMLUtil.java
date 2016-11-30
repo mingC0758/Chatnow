@@ -5,13 +5,20 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import momingqi.client.Friend;
+import momingqi.server.User;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.io.SAXReader;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -40,7 +47,8 @@ public final class XMLUtil
 	}
 	
 	
-	/**解析登陆xml，并返回到字符串id和pwd
+	/**
+	 * 解析登陆xml，并返回到字符串id(String[0])和pwd(String[1])数组
 	 * 
 	 * @param xml
 	 * @param id
@@ -63,22 +71,48 @@ public final class XMLUtil
 	}
 	
 	/**
-	 * 从usersxml里获取id对应的pwd
-	 * @return 返回pwd
-	 * @throws IOException 
-	 * @throws SAXException 
-	 * @throws ParserConfigurationException 
+	 * 从users.xml中获取id对应用户的信息（id, pwd, nickname, photo）
+	 * @param id
+	 * @return 返回一个字符串数组（id, pwd, nickname, photo）
+	 * @throws DocumentException 
 	 */
-	public final static String getPwd(File usersxml, String id) throws SAXException, IOException, ParserConfigurationException
+	public final static String[] parseUsersXML(String id) throws DocumentException
 	{
-		SAXParser parser = SAXParserFactory.newInstance()
-				.newSAXParser();
+		Document doc = new SAXReader().read("./server_resources/users.xml");
+		Node node = doc.selectSingleNode("//user[@id='" + id + "']");
 
-		UsersXMLHandler h = new UsersXMLHandler(id);
-		parser.parse(usersxml, h);
+		if(node == null) return null;		//查无此人
+		Element e_user = (Element) node;
+		String pwd = e_user.attributeValue("pwd");
+		String nickname = e_user.attributeValue("nickname");
+		String photo = e_user.attributeValue("photo");
+
+		String[] result = new String[4];
+		result[0] = id;
+		result[1] = pwd;
+		result[2] = nickname;
+		result[3] = photo;
 		
-		return h.cor_pwd;
+		return result;
 	}
+	
+//	/**
+//	 * 从usersxml里获取id对应的pwd
+//	 * @return 返回pwd
+//	 * @throws IOException 
+//	 * @throws SAXException 
+//	 * @throws ParserConfigurationException 
+//	 */
+//	public final static String getPwd(File usersxml, String id) throws SAXException, IOException, ParserConfigurationException
+//	{
+//		SAXParser parser = SAXParserFactory.newInstance()
+//				.newSAXParser();
+//
+//		UsersXMLHandler h = new UsersXMLHandler(id);
+//		parser.parse(usersxml, h);
+//		
+//		return h.cor_pwd;
+//	}
 	
 	public final static HashMap<String, Friend> parseFriends(File xml) throws ParserConfigurationException, SAXException, IOException
 	{
@@ -144,26 +178,26 @@ class LoginXMLHandler extends DefaultHandler
 	}
 }
 
-class UsersXMLHandler extends DefaultHandler
-{
-	private String id;
-	public String cor_pwd;	//正确密码
-	
-	public UsersXMLHandler(String id)
-	{
-		this.id = id;
-	}
-	
-	@Override
-	public void startElement(String uri, String localName, String qName,
-			Attributes attributes) throws SAXException
-	{
-		if(qName.equals("user"))
-		{
-			if(attributes.getValue("id").equals(id))
-			{
-				cor_pwd = attributes.getValue("pwd");
-			}
-		}
-	}
-}
+//class UsersXMLHandler extends DefaultHandler
+//{
+//	private String id;
+//	public String cor_pwd;	//正确密码
+//	
+//	public UsersXMLHandler(String id)
+//	{
+//		this.id = id;
+//	}
+//	
+//	@Override
+//	public void startElement(String uri, String localName, String qName,
+//			Attributes attributes) throws SAXException
+//	{
+//		if(qName.equals("user"))
+//		{
+//			if(attributes.getValue("id").equals(id))
+//			{
+//				cor_pwd = attributes.getValue("pwd");
+//			}
+//		}
+//	}
+//}

@@ -32,6 +32,7 @@ public class SendMsgThread extends Thread
 			out = cf.getOutputStream();
 			out.write(msg.getBytes());
 			out.flush();
+			System.out.println("向服务器发送消息：" + msg);
 		}
 		catch (IOException e)
 		{

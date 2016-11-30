@@ -236,7 +236,6 @@ public class MainFrame extends JFrame
 			}
 			catch (IOException e)
 			{
-				showError("与服务器断开连接!");
 			}
 			System.exit(0);
 		}

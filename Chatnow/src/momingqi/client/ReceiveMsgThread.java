@@ -70,7 +70,7 @@ public class ReceiveMsgThread extends Thread
 			
 			parser.parse(in, new DefaultHandler()
 			{
-				boolean isUserList = false;
+				boolean isOnlineList = false;
 				boolean isMsg = false;
 				String msg_id;	//发送者的id
 				String msg;		//聊天消息
@@ -89,14 +89,14 @@ public class ReceiveMsgThread extends Thread
 					{
 						mf.removeOnlineUser(attributes.getValue("id"));
 					}
-					else if(qName.equals("userlist"))
+					else if(qName.equals("onlinelist"))
 					{
-						isUserList = true;
+						isOnlineList = true;
 					}
-					else if(qName.equals("user") && isUserList == true)
+					else if(qName.equals("user") && isOnlineList == true)
 					{
 						ids[id_index] = attributes.getValue("id");
-						System.out.println("id:"+ids[id_index]);
+						System.out.println("新上线好友，id:"+ids[id_index]);
 						id_index++;
 					}
 					else if(qName.equals("msg"))
@@ -167,9 +167,9 @@ public class ReceiveMsgThread extends Thread
 				public void endElement(String uri, String localName,
 						String qName) throws SAXException
 				{
-					if(qName.equals("userlist"))
+					if(qName.equals("onlinelist"))
 					{
-						isUserList = false;
+						isOnlineList = false;
 						System.out.println("初始化在线列表");
 						mf.initOnlineUser(ids);
 					}

@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -14,11 +13,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import momingqi.util.AboutPanel;
@@ -28,9 +30,10 @@ public class Server extends JFrame
 {
 	public JLabel statusLabel;			//服务器状态标签
 	public JTextField portTextField;	//端口输入框
+	public JTextArea logTextArea;	//记录输出框
 	public JButton startButton;		//启动按钮
 	public ServerSocket serverSocket;	//服务器serversocket
-	public LinkedList<User> userList;				//在线用户列表
+	public LinkedList<User> onlineList;				//在线用户列表
 	
 	public Server()
 	{
@@ -46,9 +49,11 @@ public class Server extends JFrame
 		 * 实例化
 		 */
 		Font font = new Font("Dialog.plain", Font.BOLD, 18);					//字体
-		Font font2 = new Font("Dialog.plain", Font.PLAIN, 18);					//字体
+		Font font2 = new Font("Dialog.plain", Font.PLAIN, 18);	
+		Font font3 = new Font("Dialog.plain", Font.PLAIN, 13);	
 		JPanel mainPanel = new JPanel(new GridLayout(3, 2, 0, 10));	//主面板
 		JPanel aboutPanel = new AboutPanel();					//作者信息面板
+		
 		this.statusLabel = new JLabel("未启动");
 		this.statusLabel.setForeground(Color.RED);
 		this.portTextField = new JTextField("10010");
@@ -79,6 +84,14 @@ public class Server extends JFrame
 		mainPanel.add(this.portTextField);
 		mainPanel.add(this.startButton);
 		
+		logTextArea = new JTextArea(20, 27);
+		logTextArea.setFont(font3);
+		logTextArea.setEditable(false);
+		logTextArea.setLineWrap(true); 	//自动换行
+		JScrollPane logscrollpane = new JScrollPane(logTextArea);	//服务器运行记录输出面板
+		JPanel logPanel = new JPanel();
+		logPanel.add(logscrollpane);
+		
 		this.addWindowListener(new WindowAdapter()
 		{
 			@Override
@@ -89,6 +102,7 @@ public class Server extends JFrame
 		});
 		this.setTitle("Chatnow——服务器");
 		this.add(mainPanel, BorderLayout.NORTH);
+		this.add(logPanel, BorderLayout.CENTER);
 		this.add(aboutPanel, BorderLayout.SOUTH);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.pack();
@@ -135,7 +149,7 @@ public class Server extends JFrame
 	{
 		try
 		{
-			for (User user : userList)
+			for (User user : onlineList)
 			{
 				user.socket.close();
 			}
@@ -148,57 +162,65 @@ public class Server extends JFrame
 	}
 
 	/**
-	 * 添加用户到用户列表
+	 * 添加用户user到在线用户列表中，并发送新增用户消息给“其他”在线用户
 	 * @throws IOException 
 	 */
-	public void addUser(User user)
+	public synchronized void addOnlineUser(User user)
 	{
-		this.userList.add(user);
-		sendOnlineUser(user);
+		this.onlineList.add(user);
+		String xml = String.format("<addOnlineUser id=\"%s\"/>", user.id);
+		
+		for (User u : onlineList)	//发送user用户给u
+		{
+			try
+			{
+				if (u.id.equals(user.id))
+					continue;
+				u.socket.getOutputStream().write(xml.getBytes()); // 发送列表
+				log("send to all:" + u.id + "  " + xml);
+			}
+			catch (IOException e1)
+			{
+				// 出现流错误，将此用户移出在线用户列表
+				e1.printStackTrace();
+				removeUser(u);
+				return;
+			}
+		}
+		String str = new String("");
+		for(User u: onlineList)
+		{
+			str += (u.id + "  ");
+		}
+		log("onlinelist: " + str);
 	}
 	
 	/**
-	 * 从用户列表中删除用户
+	 * 根据id获得在线用户的User对象，若该用户不在线则返回null
+	 * @param id
+	 * @return 找到则返回User对象，否则返回null
+	 */
+	public User getUser(String id)
+	{
+		for (User u : onlineList)
+		{
+			if(u.id.equals(id))
+			{
+				return u;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 从用户列表中删除用户，并发送消息通知其他在线用户
 	 * @throws IOException 
 	 */
 	public synchronized void removeUser(User user)
 	{
-		this.userList.remove(user);
-		removeOnlineUser(user);
-		System.out.println("有用户退出 id：" + user.id);
-	}
-	
-	/**
-	 * 向在线用户发送新增的在线用户id
-	 * @throws IOException 
-	 */
-	public synchronized void sendOnlineUser(User user)
-	{
-		String xml = String.format("<addOnlineUser id=\"%s\"/>", user.id);
-		System.out.println("服务端发送消息：" + xml);
-		
-		for (User u : userList)
-			{
-				if(u == user) break;	//不发给加入的用户
-				try
-				{
-					if(u.id.equals(user.id)) continue;
-					u.socket.getOutputStream().write(xml.getBytes()); // 发送列表
-				}
-				catch (IOException e1)
-				{
-					// 出现流错误，将此用户移出在线用户列表
-					e1.printStackTrace();
-					removeUser(u);
-					return;
-				}
-			}
-	}
-	
-	public synchronized void removeOnlineUser(User user)
-	{
+		this.onlineList.remove(user);
 		String xml = String.format("<removeOnlineUser id=\"%s\"/>", user.id);
-		for (User u: userList)	//向所有用户发送移除在线用户消息
+		for (User u: onlineList)	//向所有用户发送移除在线用户消息
 		{
 			if(u == user) continue;	//不发给退出的用户
 			try
@@ -207,12 +229,15 @@ public class Server extends JFrame
 			}
 			catch (IOException e)
 			{
-				removeUser(u);
-				e.printStackTrace();
+				e.printStackTrace();	//此异常可忽略
 			}
 		}
-		System.out.println("服务端发送消息：" + xml);
+		log("client id:" + user.id + "exit normally.");
+		log("send to all：" + xml);
 	}
+	
+	
+	
 	
 	/**
 	 * 获取端口号，并校验
@@ -235,24 +260,33 @@ public class Server extends JFrame
 	}
 
 	/**
-	 * 发送所有用户id给user
+	 * 发送当前在线用户列表给user
 	 * @throws IOException 
 	 */
-	public synchronized void sendUserlist(Socket socket) throws IOException
+	public synchronized void sendonlinelist(User user) throws IOException
 	{
 		/**
 		 * 构造用户列表xml
 		 */
-		StringBuffer xml = new StringBuffer("<userlist>");
-		for(User user: userList)
+		StringBuffer xml = new StringBuffer("<onlinelist>");
+		for(User u: onlineList)
 		{
-			xml.append(String.format("<user id=\"%s\"/>", user.id));
+			xml.append(String.format("<user id=\"%s\"/>", u.id));
 		}
-		xml.append("</userlist>");
+		xml.append("</onlinelist>");
 		String str_xml = new String(xml);
 		/**
 		 * 发送用户列表
 		 */
-		socket.getOutputStream().write(str_xml.getBytes());
+		user.getOutputStream().write(str_xml.getBytes());
+		log("send to " + user.id + ": " + xml);
+	}
+	
+	/**
+	 * 记录服务器的运行消息，显示在logTextArea中
+	 */
+	public void log(String text)
+	{
+		this.logTextArea.append(text + "\n");
 	}
 }
