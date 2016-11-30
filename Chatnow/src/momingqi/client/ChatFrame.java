@@ -1,5 +1,6 @@
 package momingqi.client;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -21,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import momingqi.util.Util;
 
@@ -29,9 +31,9 @@ public class ChatFrame extends JFrame
 	public MainFrame mf;
 	private Friend f;
 	public JTextArea msgArea;
-	public JTextArea inputArea;
+	public JTextField inputField;
 	public JLabel tipLabel;
-	final Font PlainFont = new Font("Dialog.plain", Font.PLAIN, 15);
+	final Font PlainFont = new Font("Dialog.plain", Font.PLAIN, 25);
 	
 	public ChatFrame(MainFrame mf, Friend f)
 	{
@@ -45,11 +47,11 @@ public class ChatFrame extends JFrame
 	 */
 	private void initComponent()
 	{
-		msgArea = new JTextArea(20, 10);
-		inputArea = new JTextArea(20, 10);
+		msgArea = new JTextArea(20, 20);
+		inputField = new JTextField(20);
 		tipLabel = new JLabel("  ");
 		msgArea.setFont(PlainFont);
-		inputArea.setFont(PlainFont);
+		inputField.setFont(PlainFont);
 		tipLabel.setFont(PlainFont);
 		
 		JPanel buttonPanel = new JPanel(new GridLayout(1,2));	//按钮面板
@@ -72,7 +74,7 @@ public class ChatFrame extends JFrame
 		buttonPanel.add(resetButton);
 		
 		//当输入框失去焦点时，消除提示信息
-		inputArea.addFocusListener(new FocusListener()	
+		inputField.addFocusListener(new FocusListener()	
 		{
 			
 			@Override
@@ -87,6 +89,17 @@ public class ChatFrame extends JFrame
 			}
 		});
 		
+		//按下回车发送消息
+		inputField.addActionListener(new ActionListener()
+		{
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				sendChatMsg();
+			}
+		});
+		//点击发送也可以发送消息
 		sendButton.addActionListener(new ActionListener()
 		{
 			
@@ -101,12 +114,12 @@ public class ChatFrame extends JFrame
 		tipLabel.setForeground(Color.RED);
 		
 		this.setLayout(new FlowLayout());
-		this.add(infoPanel);
-		this.add(msgArea);
-		this.add(inputArea);
+		this.add(infoPanel, BorderLayout.NORTH);
+		this.add(msgArea, BorderLayout.CENTER);
+		this.add(inputField, BorderLayout.SOUTH);
 		this.add(buttonPanel);
 		this.setTitle("正在与" + f.nickname + "聊天");
-		this.pack();
+		this.setSize(500, 900);
 		this.setVisible(true);
 		this.addWindowListener(new WindowAdapter()
 		{
@@ -125,7 +138,7 @@ public class ChatFrame extends JFrame
 	 */
 	private void sendChatMsg()
 	{
-		String msg = inputArea.getText();
+		String msg = inputField.getText();
 		if(msg.equals(""))	//输出框为空
 		{
 			tipLabel.setText("请输入内容！");
@@ -141,6 +154,18 @@ public class ChatFrame extends JFrame
 		//创建发送消息线程
 		SendMsgThread smt = new SendMsgThread(this, msg_xml);
 		smt.start();
+		//清空发送区
+		inputField.setText("");	
+		//显示到聊天区
+		//获取系统时间time
+		Date now = new Date();
+		DateFormat df = DateFormat.getTimeInstance();
+		String time = df.format(now);
+		// 构建message显示到msgArea文本框中
+		String message = String.format("%s  %s(%s)\n%s\n\n", time, mf.getNickName(),
+				mf.getID(), msg);// 获取系统当前时间
+		msgArea.append(message);
+		
 	}
 	
 	/**

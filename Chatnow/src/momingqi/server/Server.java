@@ -50,7 +50,7 @@ public class Server extends JFrame
 		 */
 		Font font = new Font("Dialog.plain", Font.BOLD, 18);					//字体
 		Font font2 = new Font("Dialog.plain", Font.PLAIN, 18);	
-		Font font3 = new Font("Dialog.plain", Font.PLAIN, 13);	
+		Font font3 = new Font("Dialog.plain", Font.PLAIN, 15);	
 		JPanel mainPanel = new JPanel(new GridLayout(3, 2, 0, 10));	//主面板
 		JPanel aboutPanel = new AboutPanel();					//作者信息面板
 		
@@ -84,11 +84,14 @@ public class Server extends JFrame
 		mainPanel.add(this.portTextField);
 		mainPanel.add(this.startButton);
 		
-		logTextArea = new JTextArea(20, 27);
+		logTextArea = new JTextArea(20, 33);
 		logTextArea.setFont(font3);
 		logTextArea.setEditable(false);
 		logTextArea.setLineWrap(true); 	//自动换行
+		logTextArea.setWrapStyleWord(true);
 		JScrollPane logscrollpane = new JScrollPane(logTextArea);	//服务器运行记录输出面板
+		logscrollpane.setOpaque(true);
+		logscrollpane.setAutoscrolls(true);
 		JPanel logPanel = new JPanel();
 		logPanel.add(logscrollpane);
 		

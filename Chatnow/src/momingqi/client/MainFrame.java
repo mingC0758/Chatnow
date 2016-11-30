@@ -136,7 +136,7 @@ public class MainFrame extends JFrame
 		this.add(listPanel);
 		this.add(addButton);
 		this.setVisible(true);
-		this.setSize(400, 500);
+		this.setSize(400, 800);
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter()
 		{
@@ -400,6 +400,11 @@ public class MainFrame extends JFrame
 		return this.id;
 	}
 	
+	public String getNickName()
+	{
+		return this.nickname;
+	}
+	
 	/**
 	 * 创建聊天框，独立创建一个线程
 	 * @param id
@@ -425,6 +430,8 @@ public class MainFrame extends JFrame
 			}
 		}
 	}
+
+	
 
 }
 
