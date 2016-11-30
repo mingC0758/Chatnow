@@ -179,7 +179,7 @@ public class Server extends JFrame
 				if (u.id.equals(user.id))
 					continue;
 				u.socket.getOutputStream().write(xml.getBytes()); // 发送列表
-				log("send to all:" + u.id + "  " + xml);
+				log("send to all:" + xml);
 			}
 			catch (IOException e1)
 			{

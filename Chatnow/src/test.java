@@ -18,12 +18,7 @@ public class test
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, InterruptedException, DocumentException
 	{
 		Document doc = new SAXReader().read("./server_resources/users.xml");
-		Node n = doc.selectSingleNode("//user[@id='10001']");
-		
-			Element e_user = (Element)n;
-			String nickname = e_user.attributeValue("nickname");
-			String photo = e_user.attributeValue("photo");
-			System.out.println(nickname + photo);
+		System.out.println(doc.getRootElement().getName());
 		
 	}
 }
