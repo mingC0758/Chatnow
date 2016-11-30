@@ -132,6 +132,7 @@ public final class XMLUtil
 	}
 
 	
+	
 }
 
 class FriendsXMLHandler extends DefaultHandler

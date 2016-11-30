@@ -10,6 +10,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import momingqi.util.Util;
+import momingqi.util.XMLUtil;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -58,7 +59,7 @@ public class ReceiveMsgThread extends Thread
 		}
 	}
 
-	private void parseMsg(String msg)//新增<close>消息，否则有错
+	private void parseMsg(String msg)
 	{
 		InputStream in = new ByteArrayInputStream(msg.getBytes());
 		
@@ -70,7 +71,7 @@ public class ReceiveMsgThread extends Thread
 			
 			parser.parse(in, new DefaultHandler()
 			{
-				boolean isMsg = false;
+				boolean isChatMsg = false;
 				String msgReceiverID;
 				
 				@Override
@@ -78,9 +79,9 @@ public class ReceiveMsgThread extends Thread
 						String qName, Attributes attributes)
 						throws SAXException
 				{
-					if(qName.equals("msg"))
+					if(qName.equals("chatmsg"))
 					{
-						isMsg = true;
+						isChatMsg = true;
 						msgReceiverID = attributes.getValue("receiver");
 					}
 					else if(qName.equals("close"))
@@ -124,11 +125,12 @@ public class ReceiveMsgThread extends Thread
 				public void characters(char[] ch, int start, int length)
 						throws SAXException
 				{
-					if (isMsg)
+					if (isChatMsg)
 					{
 						String msg = new String(ch, start, length);
-						String xml = String.format("<msg id=\"%s\">%s</msg>",
+						String xml = String.format("<chatmsg sender=\"%s\">%s</chatmsg>",
 								user.id, msg);
+						
 						for (User u : server.onlineList)
 						{
 							if (u.id.equals(msgReceiverID))
@@ -139,6 +141,7 @@ public class ReceiveMsgThread extends Thread
 											.getOutputStream();
 									outForReceiver.write(xml.getBytes());
 									outForReceiver.flush();
+									server.log("send to id:" + u.id + xml);
 								}
 								catch (IOException e) //若发送消息给接收者失败时，则返回servererror给发送者
 								{
@@ -148,14 +151,13 @@ public class ReceiveMsgThread extends Thread
 										outForSender = user.socket
 												.getOutputStream();
 										outForSender
-												.write("<servererror type=\"msgsenderror\"/>"
+												.write("<msgerror/>"	//由于对方下线导致发送消息失败
 														.getBytes());
 										outForSender.flush();
+										server.log("send to id:" + user.id + "<msgerror/>");
 									}
 									catch (IOException e1)
 									{
-										server.removeUser(user);
-										e.printStackTrace();
 									}
 
 								}
@@ -170,7 +172,7 @@ public class ReceiveMsgThread extends Thread
 				{
 					if(qName.equals("msg"))
 					{
-						isMsg = false;
+						isChatMsg = false;
 					}
 				}
 			});

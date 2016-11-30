@@ -47,8 +47,14 @@ public class ClientConnectionThread extends Thread
 			}
 			else if(result.equals("error"))	//登陆失败
 			{
-				client.tipLabel.setText("账户或密码错误！");
-				//client.socket.close();
+				client.showError("账户或密码错误！");
+				client.socket.close();
+				return;
+			}
+			else if(result.equals("repeat"))	//重复登陆
+			{
+				client.showError("请勿重复登陆！");
+				client.socket.close();
 				return;
 			}
 		}

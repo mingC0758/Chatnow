@@ -71,7 +71,7 @@ public class ReceiveMsgThread extends Thread
 			parser.parse(in, new DefaultHandler()
 			{
 				boolean isOnlineList = false;
-				boolean isMsg = false;
+				boolean isChatMsg = false;
 				String msg_id;	//发送者的id
 				String msg;		//聊天消息
 				String[] ids = new String[20];
@@ -81,11 +81,11 @@ public class ReceiveMsgThread extends Thread
 				public void startElement(String uri, String localName,
 						String qName, Attributes attributes) throws SAXException
 				{
-					if(qName.equals("addOnlineUser"))	//新增在线用户
+					if(qName.equals("addonlineuser"))	//新增在线用户
 					{
 						mf.addOnlineUser(attributes.getValue("id"));
 					}
-					else if(qName.equals("removeOnlineUser"))
+					else if(qName.equals("removeonlineuser"))
 					{
 						mf.removeOnlineUser(attributes.getValue("id"));
 					}
@@ -99,10 +99,10 @@ public class ReceiveMsgThread extends Thread
 						System.out.println("新上线好友，id:"+ids[id_index]);
 						id_index++;
 					}
-					else if(qName.equals("msg"))
+					else if(qName.equals("chatmsg"))
 					{
-						isMsg = true;
-						msg_id = attributes.getValue("id");
+						isChatMsg = true;
+						msg_id = attributes.getValue("sender");
 					}
 					else if(qName.equals("addfriend"))
 					{
@@ -156,7 +156,7 @@ public class ReceiveMsgThread extends Thread
 				public void characters(char[] ch, int start, int length)
 						throws SAXException
 				{
-					if(isMsg == true)
+					if(isChatMsg == true)
 					{
 						//获取消息
 						msg = new String(ch, start, length);
@@ -173,10 +173,11 @@ public class ReceiveMsgThread extends Thread
 						System.out.println("初始化在线列表");
 						mf.initOnlineUser(ids);
 					}
-					else if(qName.equals("msg"))
+					else if(qName.equals("chatmsg"))
 					{
-						isMsg = false;
+						isChatMsg = false;
 						ChatFrame cf = mf.getChatFrame(msg_id);
+						
 						if(cf == null)	//窗口没有打开
 						{
 							//询问用户是否打开聊天窗口

@@ -202,7 +202,7 @@ public class MainFrame extends JFrame
 					ChatFrame cf = chatFrameMap.get(id); // 获取聊天框
 					if (cf == null) // 若聊天框不存在则创建
 					{
-						// 创建聊天面板并添加到chatpanelmap中
+						// 创建聊天面板并自动添加到chatpanelmap中
 						createChatFrame(friendMap.get(id));
 					}
 					else
@@ -263,8 +263,7 @@ public class MainFrame extends JFrame
 	public ChatFrame createChatFrame(Friend f)
 	{
 		ChatFrame cf = new ChatFrame(this, f);
-		this.chatFrameMap.put(id, cf);
-		
+		this.chatFrameMap.put(f.id, cf);
 		return cf;
 	}
 

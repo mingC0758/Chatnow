@@ -168,7 +168,7 @@ public class Server extends JFrame
 	public synchronized void addOnlineUser(User user)
 	{
 		this.onlineList.add(user);
-		String xml = String.format("<addOnlineUser id=\"%s\"/>", user.id);
+		String xml = String.format("<addonlineuser id=\"%s\"/>", user.id);
 		
 		for (User u : onlineList)	//发送user用户给u
 		{
@@ -219,7 +219,7 @@ public class Server extends JFrame
 	public synchronized void removeUser(User user)
 	{
 		this.onlineList.remove(user);
-		String xml = String.format("<removeOnlineUser id=\"%s\"/>", user.id);
+		String xml = String.format("<removeonlineuser id=\"%s\"/>", user.id);
 		for (User u: onlineList)	//向所有用户发送移除在线用户消息
 		{
 			if(u == user) continue;	//不发给退出的用户
@@ -237,28 +237,6 @@ public class Server extends JFrame
 	}
 	
 	
-	
-	
-	/**
-	 * 获取端口号，并校验
-	 * @return 端口错误时返回-1
-	 */
-	private int getPort()
-	{
-		String str_port = this.portTextField.getText();
-		if(Util.isCorrectPort(str_port))	//判断端口是否合法
-		{
-			int int_port = Integer.parseInt(str_port);
-			return int_port;
-		}
-		else return -1;
-	}
-	
-	public static void main(String[] args)
-	{
-		Server server = new Server();
-	}
-
 	/**
 	 * 发送当前在线用户列表给user
 	 * @throws IOException 
@@ -288,5 +266,25 @@ public class Server extends JFrame
 	public void log(String text)
 	{
 		this.logTextArea.append(text + "\n");
+	}
+	
+	/**
+	 * 获取端口号，并校验
+	 * @return 端口错误时返回-1
+	 */
+	private int getPort()
+	{
+		String str_port = this.portTextField.getText();
+		if(Util.isCorrectPort(str_port))	//判断端口是否合法
+		{
+			int int_port = Integer.parseInt(str_port);
+			return int_port;
+		}
+		else return -1;
+	}
+	
+	public static void main(String[] args)
+	{
+		Server server = new Server();
 	}
 }

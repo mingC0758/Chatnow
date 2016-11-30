@@ -128,4 +128,9 @@ public class Client extends JFrame
 	{
 		Client client = new Client();
 	}
+
+	public void showError(String error)
+	{
+		this.tipLabel.setText(error);
+	}
 }

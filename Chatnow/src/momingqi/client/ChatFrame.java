@@ -2,6 +2,7 @@ package momingqi.client;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,6 +31,7 @@ public class ChatFrame extends JFrame
 	public JTextArea msgArea;
 	public JTextArea inputArea;
 	public JLabel tipLabel;
+	final Font PlainFont = new Font("Dialog.plain", Font.PLAIN, 15);
 	
 	public ChatFrame(MainFrame mf, Friend f)
 	{
@@ -44,6 +48,9 @@ public class ChatFrame extends JFrame
 		msgArea = new JTextArea(20, 10);
 		inputArea = new JTextArea(20, 10);
 		tipLabel = new JLabel("  ");
+		msgArea.setFont(PlainFont);
+		inputArea.setFont(PlainFont);
+		tipLabel.setFont(PlainFont);
 		
 		JPanel buttonPanel = new JPanel(new GridLayout(1,2));	//按钮面板
 		JPanel infoPanel = new JPanel();	//对方的个人信息面板，包括id，nickname和头像
@@ -86,7 +93,7 @@ public class ChatFrame extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				sendMsg();
+				sendChatMsg();
 			}
 
 		});
@@ -116,7 +123,7 @@ public class ChatFrame extends JFrame
 	/**
 	 * 点击发送按钮时
 	 */
-	private void sendMsg()
+	private void sendChatMsg()
 	{
 		String msg = inputArea.getText();
 		if(msg.equals(""))	//输出框为空
@@ -130,7 +137,7 @@ public class ChatFrame extends JFrame
 			return;
 		}
 		//构建xml
-		String msg_xml = String.format("<?xml version=\"1.0\" encoding=\"UTF-8\"?><msg sender=\"%s\" receiver=\"%s\">%s</msg>", mf.getID(), f.id, msg);
+		String msg_xml = String.format("<chatmsg receiver=\"%s\">%s</chatmsg>", f.id, msg);
 		//创建发送消息线程
 		SendMsgThread smt = new SendMsgThread(this, msg_xml);
 		smt.start();
@@ -142,8 +149,14 @@ public class ChatFrame extends JFrame
 	 */
 	public void setMsgText(String msg)
 	{
-		//获取系统当前时间
-		msgArea.append("\n" + msg);
+		//获取系统时间time
+		Date now = new Date();
+		DateFormat df = DateFormat.getTimeInstance();
+		String time = df.format(now);
+		//构建message显示到msgArea文本框中
+		String message = String.format("%s  %s(%s)\n%s\n\n", time, f.nickname, f.id, msg);//获取系统当前时间
+		msgArea.append(message);
+		
 	}
 	
 	public OutputStream getOutputStream() throws IOException
