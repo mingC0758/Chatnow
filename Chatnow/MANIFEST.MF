@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: momingqi.client.Client
+Class-Path: lib/dom4j-1.6.1.jar
+lib/jaxen-1.1-beta-6.jar

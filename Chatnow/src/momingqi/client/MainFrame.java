@@ -1,12 +1,9 @@
 package momingqi.client;
 
 import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -39,6 +36,7 @@ import org.xml.sax.SAXException;
  * @author mingC
  *
  */
+@SuppressWarnings("serial")
 public class MainFrame extends JFrame
 {
 	private Socket socket;
@@ -452,6 +450,7 @@ public class MainFrame extends JFrame
 }
 
 
+@SuppressWarnings("serial")
 //class buildChatFrameThread extends Thread
 //{
 //	private MainFrame mf;

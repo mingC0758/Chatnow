@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 
 import momingqi.util.AboutPanel;
 
+@SuppressWarnings("serial")
 public class Client extends JFrame
 {
 	public JTextField idTextField;
@@ -29,6 +30,7 @@ public class Client extends JFrame
 	public Socket socket;
 	public InputStream in;
 	public OutputStream out;
+	public String id;	//此用户id
 	
 	public Client()
 	{
@@ -120,10 +122,12 @@ public class Client extends JFrame
 	 */
 	public void login()
 	{
+		id = idTextField.getText();
 		ClientConnectionThread cct = new ClientConnectionThread(this);
 		cct.start();
 	}
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args)
 	{
 		Client client = new Client();

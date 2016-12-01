@@ -1,8 +1,6 @@
 package momingqi.client;
 
 import java.net.Socket;
-
-import momingqi.util.Util;
 import momingqi.util.XMLUtil;
 
 public class ClientConnectionThread extends Thread
@@ -32,30 +30,10 @@ public class ClientConnectionThread extends Thread
 			
 			client.socket.getOutputStream().write(login_xml.getBytes());
 			//接收验证结果
-			client.in = client.socket.getInputStream();
-			String result = Util.readFromInputStream(client.in);
-			System.out.println("接收到登陆结果：" + result);
 			
-			if(result.equals("succeed"))	//登陆成功
-			{
-				System.out.println("登陆成功");
-				MainFrame mf = new MainFrame(id, client.socket);
-				client.setVisible(false);
-				ClientAcceptMsgThread rmt = new ClientAcceptMsgThread(mf, client.in);
-				rmt.start();
-			}
-			else if(result.equals("error"))	//登陆失败
-			{
-				client.showError("账户或密码错误！");
-				client.socket.close();
-				return;
-			}
-			else if(result.equals("repeat"))	//重复登陆
-			{
-				client.showError("请勿重复登陆！");
-				client.socket.close();
-				return;
-			}
+			ClientAcceptMsgThread rmt = new ClientAcceptMsgThread(client, client.socket);
+			rmt.start();
+			
 		}
 		catch (Exception e)
 		{

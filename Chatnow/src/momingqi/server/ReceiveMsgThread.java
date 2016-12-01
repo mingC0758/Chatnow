@@ -43,27 +43,36 @@ public class ReceiveMsgThread extends Thread
 				Document doc = new SAXReader().read(xml_in);
 				server.log("accept id：" + user.id + " " + msg);
 				Element root = doc.getRootElement();	//获得xml的根节点
-				switch(root.getName())
-				{
-					case "chatmsg":
-						handleChatMsg(root); break;
-					case "close":
-						handleClose(root); break;
-					case "addfriend":
-						handleAddFriend(root); break;
-					case "removefriend":
-						handleRemoveFriend(root); break;
-				}
+//				switch(root.getName())
+//				{
+//					case "chatmsg":
+//						handleChatMsg(root); break;
+//					case "close":
+//						handleClose(root); break;
+//					case "addfriend":
+//						handleAddFriend(root); break;
+//					case "removefriend":
+//						handleRemoveFriend(root); break;
+//				}
+				String tag = root.getName();
+				if(tag.equals("chatmsg"))
+					handleChatMsg(root);
+				else if(tag.equals("close"))
+					handleClose(root);
+				else if(tag.equals("addfriend"))
+					handleAddFriend(root);
+				else if(tag.equals("removefriend"))
+					handleRemoveFriend(root);
 			}
 			catch (DocumentException e)
 			{
 				server.log("parse XML error");// TODO Auto-generated catch block
 				e.printStackTrace();
+				break;
 			}
 			catch (IOException e)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				break;
 			}
 		}
 	}

@@ -20,14 +20,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.LookAndFeel;
-import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import momingqi.util.AboutPanel;
 import momingqi.util.Util;
 
+@SuppressWarnings("serial")
 public class Server extends JFrame
 {
 	public JLabel statusLabel;			//服务器状态标签
@@ -289,6 +287,7 @@ public class Server extends JFrame
 	
 	public static void main(String[] args) throws UnsupportedLookAndFeelException
 	{
+		@SuppressWarnings("unused")
 		Server server = new Server();
 		
 	}

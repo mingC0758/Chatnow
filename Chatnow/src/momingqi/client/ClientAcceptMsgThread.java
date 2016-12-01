@@ -3,6 +3,7 @@ package momingqi.client;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Socket;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -20,13 +21,24 @@ import org.dom4j.io.SAXReader;
 
 public class ClientAcceptMsgThread extends Thread
 {
+	public Client client;
 	public MainFrame mf;
+	public Socket socket;
 	public InputStream in;
 	
-	public ClientAcceptMsgThread(MainFrame mf, InputStream in)
+	public ClientAcceptMsgThread(Client client, Socket socket)
 	{
-		this.mf = mf;
-		this.in = in;
+		this.client = client;
+		this.socket = socket;
+		try
+		{
+			in = socket.getInputStream();
+		}
+		catch (IOException e)
+		{
+			this.interrupt();
+		}
+		
 	}
 
 	@Override
@@ -59,6 +71,7 @@ public class ClientAcceptMsgThread extends Thread
 				try
 				{
 					doc = reader.read(cor_msg_in);
+					@SuppressWarnings("unchecked")
 					List<Element> list = (List<Element>)doc.getRootElement().elements();
 					for(Element elem: list)
 					{
@@ -80,20 +93,78 @@ public class ClientAcceptMsgThread extends Thread
 	 */
 	private void dispatch(Element root)
 	{
-		switch(root.getName())
+//		switch(root.getName())
+//		{
+//			case "chatmsg":
+//				handleChatMsg(root); break;
+//			case "addonlineuser":
+//				handleAddOnlineUser(root); break;
+//			case "removeonlineuser":
+//				handleRemoveOnlineUser(root); break;
+//			case "onlinelist":
+//				handleOnlineList(root); break;
+//			case "addfriend":
+//				handleAddFriend(root); break;
+//			case "removefriend":
+//				handleRemoveFriend(root); break;
+//		}
+		String tag = root.getName();
+		if (tag.equals("chatmsg"))
+			handleChatMsg(root);
+
+		else if (tag.equals("addonlineuser"))
+			handleAddOnlineUser(root);
+
+		else if (tag.equals("removeonlineuser"))
+			handleRemoveOnlineUser(root);
+
+		else if (tag.equals("onlinelist"))
+			handleOnlineList(root);
+
+		else if (tag.equals("addfriend"))
+
+			handleAddOnlineUser(root);
+		else if (tag.equals("removefriend"))
+			handleRemoveFriend(root);
+		
+		else if (tag.equals("login"))
+			handleLoginResult(root);
+	}
+
+	private void handleLoginResult(Element root)
+	{
+		String result = root.attributeValue("result");
+		System.out.println("接收到登陆结果：" + result);
+
+		if(result.equals("succeed"))	//登陆成功
 		{
-			case "chatmsg":
-				handleChatMsg(root); break;
-			case "addonlineuser":
-				handleAddOnlineUser(root); break;
-			case "removeonlineuser":
-				handleRemoveOnlineUser(root); break;
-			case "onlinelist":
-				handleOnlineList(root); break;
-			case "addfriend":
-				handleAddFriend(root); break;
-			case "removefriend":
-				handleRemoveFriend(root); break;
+			System.out.println("登陆成功");
+			mf = new MainFrame(client.id, client.socket);
+			client.setVisible(false);
+		}
+		else if(result.equals("error"))	//登陆失败
+		{
+			client.showError("账户或密码错误！");
+			try
+			{
+				socket.close();
+			}
+			catch (IOException e)
+			{
+			}
+			return;
+		}
+		else if(result.equals("repeat"))	//重复登陆
+		{
+			client.showError("请勿重复登陆！");
+			try
+			{
+				socket.close();
+			}
+			catch (IOException e)
+			{
+			}
+			return;
 		}
 	}
 

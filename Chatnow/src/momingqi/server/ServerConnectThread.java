@@ -1,14 +1,12 @@
 package momingqi.server;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,10 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import momingqi.util.Util;
 import momingqi.util.XMLUtil;
 
-import org.dom4j.Document;
 import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.xml.sax.SAXException;
 
 /**
@@ -33,13 +28,11 @@ public class ServerConnectThread extends Thread
 {
 	private Server server;
 	private int port;
-	private File usersxml;
 	
 	public ServerConnectThread(Server server, int port)
 	{
 		this.server = server;
 		this.port = port;
-		this.usersxml = new File("./server_resources/users.xml");
 	}
 	
 	@Override
@@ -90,7 +83,7 @@ public class ServerConnectThread extends Thread
 					server.log("id"+user.id+"  " + user.nickname);
 					if(server.getUser(user.id) != null)	//判断此用户是否在线
 					{
-						out.write("repeat".getBytes());	//重复登陆
+						out.write("<login result=\"repeat\"/>".getBytes());	//重复登陆
 						out.flush();
 						server.log("REPEAT!");
 						socket.close();		//关闭socket
@@ -98,7 +91,7 @@ public class ServerConnectThread extends Thread
 					else
 					{
 						//发送登陆成功的消息给客户端
-						out.write("succeed".getBytes());
+						out.write("<login result=\"succeed\"/>".getBytes());
 						out.flush();
 						server.log("SUCCEED!");
 						server.sendonlinelist(user);	//把当前的在线用户列表发给新登陆的用户
@@ -111,7 +104,7 @@ public class ServerConnectThread extends Thread
 				}
 				else						//密码或id错误
 				{
-					out.write("error".getBytes());
+					out.write("<login result=\"error\"/>".getBytes());
 					out.flush();
 					server.log("ERROR ID OR PASSWORD!");
 					socket.close();	//关闭socket

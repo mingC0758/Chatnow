@@ -1,7 +1,5 @@
 package momingqi.util;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 
@@ -11,12 +9,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class AboutPanel extends JPanel
 {
 	public AboutPanel()
 	{
 		Font font = new Font("Dialog.plain", Font.PLAIN, 16);
-		Icon icon = new ImageIcon("./server_resources/author.jpg");
+		Icon icon = new ImageIcon("./utilsrc/author.jpg");
 		JPanel msgPanel = new JPanel(new GridLayout(4, 1));
 		JLabel label1 = new JLabel("作者：莫铭棋");
 		JLabel label2 = new JLabel("学号：3115005325");
