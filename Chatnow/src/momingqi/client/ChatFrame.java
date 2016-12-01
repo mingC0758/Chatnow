@@ -35,7 +35,7 @@ public class ChatFrame extends JFrame
 	public JTextArea msgArea;
 	public JTextField inputField;
 	public JLabel tipLabel;
-	final Font PlainFont = new Font("Dialog.plain", Font.PLAIN, 25);
+	final Font PlainFont = new Font("Dialog.plain", Font.PLAIN, 18);
 	
 	public ChatFrame(MainFrame mf, Friend f)
 	{
@@ -49,8 +49,8 @@ public class ChatFrame extends JFrame
 	 */
 	private void initComponent()
 	{
-		msgArea = new JTextArea(20, 20);
-		inputField = new JTextField(20);
+		msgArea = new JTextArea(25, 25);
+		inputField = new JTextField(25);
 		tipLabel = new JLabel("  ");
 		msgArea.setFont(PlainFont);
 		inputField.setFont(PlainFont);
@@ -122,12 +122,12 @@ public class ChatFrame extends JFrame
 		msgScrollPane.setAutoscrolls(true);
 		
 		this.setLayout(new FlowLayout());
-		this.add(infoPanel, BorderLayout.NORTH);
-		this.add(msgScrollPane, BorderLayout.CENTER);
-		this.add(inputField, BorderLayout.SOUTH);
+		this.add(infoPanel);
+		this.add(msgScrollPane);
+		this.add(inputField);
 		this.add(buttonPanel);
 		this.setTitle("正在与" + f.nickname + "聊天");
-		this.setSize(500, 900);
+		this.setSize(470, 830);
 		this.setVisible(true);
 		this.addWindowListener(new WindowAdapter()
 		{
