@@ -10,10 +10,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.LinkedList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,6 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import momingqi.util.AboutPanel;
 import momingqi.util.Util;
@@ -285,8 +287,9 @@ public class Server extends JFrame
 		else return -1;
 	}
 	
-	public static void main(String[] args)
+	public static void main(String[] args) throws UnsupportedLookAndFeelException
 	{
 		Server server = new Server();
+		
 	}
 }

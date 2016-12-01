@@ -41,19 +41,18 @@ public class ReceiveMsgThread extends Thread
 				String msg = Util.readFromInputStream(in);	//方法堵塞，从输入流中读取字节并转换成字符串
 				InputStream xml_in = new ByteArrayInputStream(msg.getBytes());
 				Document doc = new SAXReader().read(xml_in);
-				System.out.println(msg);
 				server.log("accept id：" + user.id + " " + msg);
 				Element root = doc.getRootElement();	//获得xml的根节点
 				switch(root.getName())
 				{
 					case "chatmsg":
-						handleChatMsg(root);
+						handleChatMsg(root); break;
 					case "close":
-						handleClose(root);
+						handleClose(root); break;
 					case "addfriend":
-						handleAddFriend(root);
+						handleAddFriend(root); break;
 					case "removefriend":
-						handleRemoveFriend(root);
+						handleRemoveFriend(root); break;
 				}
 			}
 			catch (DocumentException e)
@@ -93,9 +92,10 @@ public class ReceiveMsgThread extends Thread
 	private void handleChatMsg(Element root)
 	{
 		String receiverID = root.attributeValue("receiver");	//获得接收者id
+		String time = root.attributeValue("time");
 		String msg = root.getText();							//获得聊天文本
-		String xml = String.format("<chatmsg sender=\"%s\">%s</chatmsg>",
-				user.id, msg);									//发送给接受者的xml
+		String xml = String.format("<chatmsg sender=\"%s\" time=\"%s\">%s</chatmsg>",
+				user.id, time, msg);									//发送给接受者的xml
 		System.out.println(msg);
 		User receiver = server.getUser(receiverID);
 		try

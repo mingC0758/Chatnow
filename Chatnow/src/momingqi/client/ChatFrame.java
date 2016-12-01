@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -62,6 +63,8 @@ public class ChatFrame extends JFrame
 		JLabel idLabel = new JLabel(f.id);
 		JLabel photoLabel = new JLabel(new ImageIcon(Util.ClientImagePath + f.photo));
 		JPanel idnamePanel = new JPanel(new GridLayout(2,1));
+		idLabel.setFont(PlainFont);
+		nicknameLabel.setFont(PlainFont);
 		idnamePanel.add(idLabel);
 		idnamePanel.add(nicknameLabel);
 		
@@ -113,10 +116,14 @@ public class ChatFrame extends JFrame
 		});
 		
 		tipLabel.setForeground(Color.RED);
+		msgArea.setEditable(false);
+		msgArea.setLineWrap(true);
+		JScrollPane msgScrollPane = new JScrollPane(msgArea);
+		msgScrollPane.setAutoscrolls(true);
 		
 		this.setLayout(new FlowLayout());
 		this.add(infoPanel, BorderLayout.NORTH);
-		this.add(msgArea, BorderLayout.CENTER);
+		this.add(msgScrollPane, BorderLayout.CENTER);
 		this.add(inputField, BorderLayout.SOUTH);
 		this.add(buttonPanel);
 		this.setTitle("正在与" + f.nickname + "聊天");
@@ -150,22 +157,24 @@ public class ChatFrame extends JFrame
 			showError("对方处于离线状态，无法发送信息。");
 			return;
 		}
+		// 获取系统时间time
+		Date now = new Date();
+		DateFormat df = DateFormat.getTimeInstance();
+		String time = df.format(now);
 		//构建xml
-		String msg_xml = String.format("<chatmsg receiver=\"%s\">%s</chatmsg>", f.id, msg);
+		String msg_xml = String.format("<chatmsg receiver=\"%s\" time=\"%s\">%s</chatmsg>", f.id, time, msg);
 		//创建发送消息线程
 		ClientSendMsgThread smt = new ClientSendMsgThread(this, msg_xml);
 		smt.start();
 		//清空发送区
 		inputField.setText("");	
 		//显示到聊天区
-		//获取系统时间time
-		Date now = new Date();
-		DateFormat df = DateFormat.getTimeInstance();
-		String time = df.format(now);
+		
 		// 构建message显示到msgArea文本框中
 		String message = String.format("%s  %s(%s)\n%s\n\n", time, mf.getNickName(),
 				mf.getID(), msg);// 获取系统当前时间
 		msgArea.append(message);
+		
 		
 	}
 	
@@ -173,12 +182,8 @@ public class ChatFrame extends JFrame
 	 * 在聊天框中显示msg
 	 * @param msg
 	 */
-	public void setMsgText(String msg)
+	public void setMsgText(String time, String msg)
 	{
-		//获取系统时间time
-		Date now = new Date();
-		DateFormat df = DateFormat.getTimeInstance();
-		String time = df.format(now);
 		//构建message显示到msgArea文本框中
 		String message = String.format("%s  %s(%s)\n%s\n\n", time, f.nickname, f.id, msg);//获取系统当前时间
 		msgArea.append(message);

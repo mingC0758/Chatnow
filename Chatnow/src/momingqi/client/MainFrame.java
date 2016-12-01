@@ -49,9 +49,9 @@ public class MainFrame extends JFrame
 	private FriendPanel[] friendPanel;				//装有每一个好友面板的数组
 	private Map<String, ChatFrame> chatFrameMap;	//好友id，聊天窗口键值对
 	
-	final Color PanelHighlight = Color.lightGray;
-	final Color PanelBackground = Color.GRAY;
-	final Color PanelClick = Color.yellow;
+	final Color PanelHighlight = new Color(184,247,136);
+	final Color PanelBackground = null;
+	final Color PanelClick = new Color(232,237,81);
 	final Font BoldFont = new Font("Dialog.plain", Font.BOLD, 18);
 	final Font PlainFont = new Font("Dialog.plain", Font.PLAIN, 15);
 	
@@ -132,6 +132,11 @@ public class MainFrame extends JFrame
 		JButton addButton = new JButton("添加好友");	//添加好友按钮
 		addButton.addActionListener(new AddFriendHandler(this));
 		
+		rightPanel.setBackground(PanelBackground);
+		userPanel.setBackground(PanelBackground);
+		listPanel.setBackground(PanelBackground);
+		
+		this.getContentPane().setBackground(PanelBackground);
 		this.setLayout(new FlowLayout());
 		this.add(userPanel);
 		this.add(listPanel);
@@ -159,6 +164,7 @@ public class MainFrame extends JFrame
 		FriendPanel newPanel = new FriendPanel();
 		newPanel.id = f.id;	//封装id标签
 		newPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+		newPanel.setBackground(PanelBackground);
 		JPanel infoPanel = new JPanel((new GridLayout(2,1)));
 		//昵称
 		JLabel label = new JLabel(f.nickname);
@@ -173,16 +179,19 @@ public class MainFrame extends JFrame
 		label = new JLabel(f.id);
 		label.setFont(PlainFont);
 		infoPanel.add(label);
+		
+		infoPanel.setBackground(PanelBackground);
 		//包装在friendPanel数组里
 		newPanel.add(new JLabel(
 				new ImageIcon("resources/ImageResources/" + f.photo)));
 		newPanel.add(infoPanel);
-		newPanel.addMouseListener(new MouseAdapter()	//鐩戝惉闈㈡澘
+		newPanel.addMouseListener(new MouseAdapter()				//给每个好友面板增加鼠标事件监听器
 		{
 			@Override
-			public void mouseEntered(MouseEvent e)	//鼠标进入时设置为明亮色
+			public void mouseEntered(MouseEvent e)					//鼠标进入时设置为明亮色
 			{
 				e.getComponent().setBackground(PanelHighlight);
+				((JPanel)e.getComponent()).getComponent(1).setBackground(PanelBackground);
 			}
 			
 			@Override
@@ -194,14 +203,14 @@ public class MainFrame extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				e.getComponent().setBackground(PanelClick); // 设置为特定颜色
-				if (e.getClickCount() == 2) // 双击打开聊天窗口
+				e.getComponent().setBackground(PanelClick); 		// 设置为特定颜色
+				if (e.getClickCount() == 2) 						// 双击打开聊天窗口
 				{
 					JPanel jp = (JPanel) ((JPanel) e.getComponent())
-							.getComponent(1); // 获得包含id标签的面板
-					String id = ((JLabel) jp.getComponent(2)).getText(); // 获得id
-					ChatFrame cf = chatFrameMap.get(id); // 获取聊天框
-					if (cf == null) // 若聊天框不存在则创建
+							.getComponent(1); 						// 获得包含id标签的面板
+					String id = ((JLabel) jp.getComponent(2)).getText(); 	// 获得id
+					ChatFrame cf = chatFrameMap.get(id); 			// 获取聊天框
+					if (cf == null) 								// 若聊天框不存在则创建
 					{
 						// 创建聊天面板并自动添加到chatpanelmap中
 						createChatFrame(friendMap.get(id));

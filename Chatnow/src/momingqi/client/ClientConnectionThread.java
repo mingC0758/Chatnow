@@ -1,6 +1,5 @@
 package momingqi.client;
 
-import java.io.InputStream;
 import java.net.Socket;
 
 import momingqi.util.Util;
