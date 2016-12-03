@@ -29,14 +29,15 @@ public class AddFriendHandler implements ActionListener
 		String targetID;
 		//弹出对话框让用户输入id
 		targetID = JOptionPane.showInputDialog(mf, "请输入好友的id", "添加好友", JOptionPane.INFORMATION_MESSAGE);
-		//判断该用户是否在线
+		if(targetID == null) return;
+		//判断该用户是否已经是好友
 		if(mf.getFriend(targetID) != null)
 		{
 			JOptionPane.showMessageDialog(mf, "您已添加他为好友！");
 			return;
 		}
 		//发送xml给服务器
-		String xml = XMLUtil.constructAddFriendXML(targetID);
+		String xml = String.format("<addfriend type=\"request\" id=\"%s\"/>", targetID);
 		new SendXMLThread(mf, xml).start();
 	}
 }

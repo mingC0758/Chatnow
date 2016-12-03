@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<friends>
-	<user id="10001" nickname="飞翔的小猫" photo="Image1.jpg"/>
-	<user id="10002" nickname="我真是个好人" photo="Image2.jpg"/>
-	<user id="10003" nickname="不要说话" photo="Image3.jpg"/>
-	<user id="10004" nickname="麻花腾" photo="Image4.jpg"/>
-	<user id="10005" nickname="老马" photo="Image5.jpg"/>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<friends> 
+  <user id="10001" nickname="飞翔的小猫" photo="Image1.jpg"/>  
+  <user id="10002" nickname="我真是个好人" photo="Image2.jpg"/>  
+  <user id="10003" nickname="不要说话" photo="Image3.jpg"/>  
+  <user id="10004" nickname="麻花腾" photo="Image4.jpg"/>  
+  <user id="10005" nickname="老马" photo="Image5.jpg"/>  
 </friends>

@@ -1,6 +1,5 @@
 package momingqi.client;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -11,6 +10,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,6 +30,14 @@ import javax.swing.JTextField;
 
 import momingqi.util.Util;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
+
 public class ChatFrame extends JFrame
 {
 	public MainFrame mf;
@@ -35,7 +45,7 @@ public class ChatFrame extends JFrame
 	public JTextArea msgArea;
 	public JTextField inputField;
 	public JLabel tipLabel;
-	final Font PlainFont = new Font("Dialog.plain", Font.PLAIN, 18);
+	final Font PlainFont = new Font("微软雅黑", Font.PLAIN, 18);
 	
 	public ChatFrame(MainFrame mf, Friend f)
 	{
@@ -174,8 +184,7 @@ public class ChatFrame extends JFrame
 		String message = String.format("%s  %s(%s)\n%s\n\n", time, mf.getNickName(),
 				mf.getID(), msg);// 获取系统当前时间
 		msgArea.append(message);
-		
-		
+		logMsg(f, time, msg);
 	}
 	
 	/**
@@ -200,11 +209,57 @@ public class ChatFrame extends JFrame
 		msgArea.append("\n" + error);
 	}
 
-	public void logMsg(String msg)
+	/**
+	 * 记录msg到消息记录文件history.xml中
+	 * @param f
+	 * @param time
+	 * @param msg
+	 */
+	public static void logMsg(Friend f, String time, String msg)
 	{
+		String filename = f.id + ".xml";
+		File file = new File("./resources/history/" + filename);
 		
+		try
+		{
+			Document doc;
+			Element root;
+//			if (!file.exists())
+//			{
+//				System.out.println("------not exist!------");
+//				// 若聊天记录文件不存在则创建一个
+//				file.createNewFile();
+//				doc = DocumentHelper.createDocument();
+//				root = doc.addElement("historys");
+//			}
+//			else
+//			{
+				doc = new SAXReader().read(file);
+				root = doc.getRootElement();
+//			}
+			Element recordElem = root.addElement("record");
+			recordElem.addAttribute("time", time);
+			recordElem.addAttribute("nickname", f.nickname);
+			recordElem.addAttribute("id", f.id);
+			recordElem.setText((msg));
+			FileOutputStream out = new FileOutputStream(file);
+			OutputFormat format = OutputFormat.createCompactFormat();
+			XMLWriter writer = new XMLWriter(out, format);
+			writer.write(doc);
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch (DocumentException e)
+		{
+			e.printStackTrace();
+		}
 	}
-
 	/**
 	 * 获得服务端的输出流
 	 */

@@ -35,17 +35,6 @@ public final class XMLUtil
 		return xml;
 	}
 	
-	/**
-	 * 构建想服务器发送的添加好友消息的xml字符串
-	 * @param id
-	 * @return
-	 */
-	public final static String constructAddFriendXML(String id)
-	{
-		String xml = String.format("<addfriend id=\"%s\">", id);
-		return xml;
-	}
-	
 	
 	/**
 	 * 解析登陆xml，并返回到字符串id(String[0])和pwd(String[1])数组
@@ -96,23 +85,6 @@ public final class XMLUtil
 		return result;
 	}
 	
-//	/**
-//	 * 从usersxml里获取id对应的pwd
-//	 * @return 返回pwd
-//	 * @throws IOException 
-//	 * @throws SAXException 
-//	 * @throws ParserConfigurationException 
-//	 */
-//	public final static String getPwd(File usersxml, String id) throws SAXException, IOException, ParserConfigurationException
-//	{
-//		SAXParser parser = SAXParserFactory.newInstance()
-//				.newSAXParser();
-//
-//		UsersXMLHandler h = new UsersXMLHandler(id);
-//		parser.parse(usersxml, h);
-//		
-//		return h.cor_pwd;
-//	}
 	
 	public final static HashMap<String, Friend> parseFriends(File xml) throws ParserConfigurationException, SAXException, IOException
 	{
@@ -123,15 +95,6 @@ public final class XMLUtil
 		parser.parse(xml, new FriendsXMLHandler(map));
 		return map;
 	}
-
-	public static String constructNewFriend(String id, String nickname, String photo)
-	{
-		String str = "";
-		String xml = String.format("");
-		return null;
-	}
-
-	
 	
 }
 
@@ -178,27 +141,3 @@ class LoginXMLHandler extends DefaultHandler
 		}
 	}
 }
-
-//class UsersXMLHandler extends DefaultHandler
-//{
-//	private String id;
-//	public String cor_pwd;	//正确密码
-//	
-//	public UsersXMLHandler(String id)
-//	{
-//		this.id = id;
-//	}
-//	
-//	@Override
-//	public void startElement(String uri, String localName, String qName,
-//			Attributes attributes) throws SAXException
-//	{
-//		if(qName.equals("user"))
-//		{
-//			if(attributes.getValue("id").equals(id))
-//			{
-//				cor_pwd = attributes.getValue("pwd");
-//			}
-//		}
-//	}
-//}

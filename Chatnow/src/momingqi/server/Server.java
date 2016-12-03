@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import momingqi.util.AboutPanel;
@@ -285,8 +286,9 @@ public class Server extends JFrame
 		else return -1;
 	}
 	
-	public static void main(String[] args) throws UnsupportedLookAndFeelException
+	public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException
 	{
+		UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		@SuppressWarnings("unused")
 		Server server = new Server();
 		

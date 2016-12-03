@@ -16,6 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import momingqi.util.AboutPanel;
 
@@ -42,8 +44,8 @@ public class Client extends JFrame
 	 */
 	private void initComponent()
 	{
-		Font font2 = new Font("Dialog.plain", Font.BOLD, 21);					//字体
-		Font font1 = new Font("Dialog.plain", Font.PLAIN, 21);					//字体
+		Font font2 = new Font("微软雅黑", Font.BOLD, 18);					//字体
+		Font font1 = new Font("微软雅黑", Font.PLAIN, 18);					//字体
 		
 		idTextField = new JTextField(12);
 		pwdTextField = new JTextField(12);
@@ -128,8 +130,9 @@ public class Client extends JFrame
 	}
 
 	@SuppressWarnings("unused")
-	public static void main(String[] args)
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
 	{
+		UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		Client client = new Client();
 	}
 

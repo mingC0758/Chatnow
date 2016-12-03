@@ -85,7 +85,70 @@ public class ReceiveMsgThread extends Thread
 
 	private void handleAddFriend(Element root)
 	{
-		//TODO
+		try
+		{
+			String type = root.attributeValue("type");
+			String receiver = root.attributeValue("id"); // 获取接收者id
+			User receiverUser = server.getUser(receiver);
+			if (receiverUser == null) // 找不到此用户
+			{
+				String none_xml = String
+						.format("<addfriend type=\"result\" id=\"%s\">none</addfriend>",
+								receiver);
+				OutputStream outToSender = user.getOutputStream();
+				
+				outToSender.write(none_xml.getBytes());
+				outToSender.flush();
+				server.log(none_xml);
+
+				return;
+			}
+			OutputStream outToReceiver = receiverUser.getOutputStream();
+
+			if (type.equals("request"))
+			{
+				String request_xml = String
+						.format("<addfriend type=\"request\" id=\"%s\" nickname=\"%s\" photo=\"%s\"></addfriend>",
+								user.id, user.nickname, user.photo);
+
+				outToReceiver.write(request_xml.getBytes());
+				outToReceiver.flush();
+				server.log("send to " + receiver + request_xml);
+
+			}
+			else if (type.equals("result"))
+			{
+				String result = root.getText();
+				User receiver_user = server.getUser(root.attributeValue("id"));
+				OutputStream out = receiver_user.socket.getOutputStream();
+				if (result.equals("accept"))
+				{
+					String xml = String
+							.format("<addfriend type=\"result\" id=\"%s\" nickname=\"%s\" photo=\"%s\">accept</addfriend>",
+									user.id, user.nickname, user.photo);
+
+					out.write(xml.getBytes());
+					out.flush();
+					server.log("send to " + receiver_user.id + xml);
+
+				}
+				else if (result.equals("refuse"))
+				{
+					String xml = String
+							.format("<addfriend type=\"result\" id=\"%s\">refuse</addfriend>",
+									user.id);
+
+					out.write(xml.getBytes());
+					out.flush();
+					server.log(xml);
+
+				}
+			}
+		}
+		catch (IOException e)
+		{
+		}
+
 	}
 
 	private void handleClose(Element root)
