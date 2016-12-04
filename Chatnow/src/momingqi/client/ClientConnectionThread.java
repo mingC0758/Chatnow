@@ -3,6 +3,11 @@ package momingqi.client;
 import java.net.Socket;
 import momingqi.util.XMLUtil;
 
+/**
+ * 连接服务器的请求线程
+ * @author mingC
+ *
+ */
 public class ClientConnectionThread extends Thread
 {
 	private Client client;
@@ -33,7 +38,6 @@ public class ClientConnectionThread extends Thread
 			
 			ClientAcceptMsgThread rmt = new ClientAcceptMsgThread(client, client.socket);
 			rmt.start();
-			
 		}
 		catch (Exception e)
 		{

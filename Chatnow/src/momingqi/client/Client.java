@@ -21,13 +21,21 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import momingqi.util.AboutPanel;
 
+/**
+ * 客户端登陆界面
+ * @author mingC
+ *
+ */
 @SuppressWarnings("serial")
-public class Client extends JFrame
+public class Client extends JFrame implements ActionListener
 {
 	public JTextField idTextField;
 	public JTextField pwdTextField;
 	public JTextField ipTextField;
 	public JTextField portTextField;
+	JButton loginButton = new JButton("登录");
+	JButton resetButton = new JButton("重置");
+	JButton defaultButton = new JButton("默认");
 	public JLabel tipLabel;
 	public Socket socket;
 	public InputStream in;
@@ -63,20 +71,13 @@ public class Client extends JFrame
 		JLabel pwdLabel = new JLabel("  密码");
 		JLabel ipLabel = new JLabel("ip地址");
 		JLabel portLabel = new JLabel("  端口");
-		JButton loginButton = new JButton("登录");
-		JButton resetButton = new JButton("重置");
-		JButton defaultButton = new JButton("默认");
+		loginButton = new JButton("登录");
+		resetButton = new JButton("重置");
+		defaultButton = new JButton("默认");
 		
-		loginButton.addActionListener(new ActionListener()
-		{
-			
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				login();
-			}
-
-		});
+		loginButton.addActionListener(this);
+		resetButton.addActionListener(this);
+		defaultButton.addActionListener(this);
 		
 		idLabel.setForeground(Color.blue);
 		idLabel.setFont(font2);
@@ -129,15 +130,43 @@ public class Client extends JFrame
 		cct.start();
 	}
 
+	public void showError(String error)
+	{
+		this.tipLabel.setText(error);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		Object source = e.getSource();
+		if(source == loginButton)
+		{
+			login();
+		}
+		else if(source == resetButton)
+		{
+			idTextField.setText("");
+			pwdTextField.setText("");
+		}
+		else if(source == defaultButton)
+		{
+			ipTextField.setText("127.0.0.1");
+			portTextField.setText("10010");
+		}
+	}
+	
+	/**
+	 * 主函数，设置UI视感为windows视感
+	 * @param args
+	 * @throws ClassNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws UnsupportedLookAndFeelException
+	 */
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
 	{
 		UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		Client client = new Client();
-	}
-
-	public void showError(String error)
-	{
-		this.tipLabel.setText(error);
 	}
 }

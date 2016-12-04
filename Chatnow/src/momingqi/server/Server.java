@@ -26,6 +26,11 @@ import javax.swing.UnsupportedLookAndFeelException;
 import momingqi.util.AboutPanel;
 import momingqi.util.Util;
 
+/**
+ * 服务器界面，有启动和运行记录功能
+ * @author mingC
+ *
+ */
 @SuppressWarnings("serial")
 public class Server extends JFrame
 {
@@ -235,10 +240,9 @@ public class Server extends JFrame
 				e.printStackTrace();	//此异常可忽略
 			}
 		}
-		log("client id:" + user.id + "exit normally.");
+		log("client id:" + user.id + "exit");
 		log("send to all：" + xml);
 	}
-	
 	
 	/**
 	 * 发送当前在线用户列表给user

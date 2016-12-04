@@ -2,6 +2,8 @@ package momingqi.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.util.Date;
 
 /**
  * 通用类，包装了很多实用方法，和配置
@@ -57,7 +59,7 @@ public final class Util
 	 * @return
 	 * @throws IOException
 	 */
-	public static String readFromInputStream(InputStream in) throws IOException
+	public final static String readFromInputStream(InputStream in) throws IOException
 	{
 		byte[] b = new byte[1024];
 		int length = in.read(b);
@@ -69,5 +71,17 @@ public final class Util
 		}
 		
 		return str;
+	}
+	
+	/**
+	 * 返回当前系统时间
+	 * @return
+	 */
+	public final static String presentTime()
+	{
+		Date now = new Date();
+		DateFormat df = DateFormat.getTimeInstance();
+		String time = df.format(now);
+		return time;
 	}
 }

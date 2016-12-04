@@ -21,7 +21,6 @@ public class ClientSendMsgThread extends Thread
 		this.msg = msg;
 	}
 
-
 	@Override
 	public void run()
 	{

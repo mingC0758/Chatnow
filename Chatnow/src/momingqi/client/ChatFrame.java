@@ -16,8 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.DateFormat;
-import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -38,6 +36,12 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
+/**
+ * 聊天窗口
+ * @author mingC
+ *
+ */
+@SuppressWarnings("serial")
 public class ChatFrame extends JFrame
 {
 	public MainFrame mf;
@@ -82,7 +86,7 @@ public class ChatFrame extends JFrame
 		infoPanel.add(idnamePanel);
 		
 		JButton sendButton = new JButton("发送");
-		JButton resetButton = new JButton("重置");
+		JButton resetButton = new JButton("清屏");
 		buttonPanel.add(tipLabel);
 		buttonPanel.add(sendButton);
 		buttonPanel.add(resetButton);
@@ -123,6 +127,16 @@ public class ChatFrame extends JFrame
 				sendChatMsg();
 			}
 
+		});
+		
+		//清屏按钮
+		resetButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				msgArea.setText("");
+			}
 		});
 		
 		tipLabel.setForeground(Color.RED);
@@ -167,10 +181,7 @@ public class ChatFrame extends JFrame
 			showError("对方处于离线状态，无法发送信息。");
 			return;
 		}
-		// 获取系统时间time
-		Date now = new Date();
-		DateFormat df = DateFormat.getTimeInstance();
-		String time = df.format(now);
+		String time = Util.presentTime();
 		//构建xml
 		String msg_xml = String.format("<chatmsg receiver=\"%s\" time=\"%s\">%s</chatmsg>", f.id, time, msg);
 		//创建发送消息线程
@@ -199,7 +210,6 @@ public class ChatFrame extends JFrame
 		
 	}
 	
-	
 	/**
 	 * 显示错误信息
 	 * @param string
@@ -224,19 +234,19 @@ public class ChatFrame extends JFrame
 		{
 			Document doc;
 			Element root;
-//			if (!file.exists())
-//			{
-//				System.out.println("------not exist!------");
-//				// 若聊天记录文件不存在则创建一个
-//				file.createNewFile();
-//				doc = DocumentHelper.createDocument();
-//				root = doc.addElement("historys");
-//			}
-//			else
-//			{
+			if (!file.exists())
+			{
+				System.out.println("------not exist!------");
+				// 若聊天记录文件不存在则创建一个
+				file.createNewFile();
+				doc = DocumentHelper.createDocument();
+				root = doc.addElement("historys");
+			}
+			else
+			{
 				doc = new SAXReader().read(file);
 				root = doc.getRootElement();
-//			}
+			}
 			Element recordElem = root.addElement("record");
 			recordElem.addAttribute("time", time);
 			recordElem.addAttribute("nickname", f.nickname);
@@ -275,6 +285,4 @@ public class ChatFrame extends JFrame
 	{
 		return mf.getInputStream();
 	}
-
-	
 }

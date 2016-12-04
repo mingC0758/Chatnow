@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,20 +38,20 @@ import org.dom4j.io.XMLWriter;
 import org.xml.sax.SAXException;
 
 /**
- * 用户主界面，负责：维护在线好友列表，维护好友面板，获得向服务器的输出流，显示错误信息
+ * 用户主界面，负责：维护所有好友列表，维护好友面板，维护聊天窗口，获得向服务器的输出流，显示错误信息
  * @author mingC
  *
  */
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame
 {
-	private Socket socket;
-	private String id;
+	private Socket socket;								//与服务器通信的socket对象
+	private String id;									//本客户端信息
 	private String nickname;
 	private String photo;
-	private Map<String, Friend> friendMap;			//好友id，Friend对象键值对
-	private Map<String, FriendPanel> friendPanelMap;	//好友面板
-	private Map<String, ChatFrame> chatFrameMap;	//好友id，聊天窗口键值对
+	private Map<String, Friend> friendMap;				//好友id，Friend对象键值对
+	private Map<String, FriendPanel> friendPanelMap;	//好友id，面板键值对
+	private Map<String, ChatFrame> chatFrameMap;		//好友id，聊天窗口键值对
 	JPanel listPanel;	//好友列表面板
 	
 	final Color PanelHighlight = new Color(184,247,136);
@@ -104,7 +103,6 @@ public class MainFrame extends JFrame
 	private void initComponent()
 	{
 		Icon icon = new ImageIcon("resources/ImageResources/" + photo);
-		System.out.println(icon);
 		
 		JPanel userPanel = new JPanel();
 		userPanel.setBorder(BorderFactory.createTitledBorder("个人信息"));
@@ -119,10 +117,10 @@ public class MainFrame extends JFrame
 		label = new JLabel(id);
 		label.setFont(PlainFont);
 		rightPanel.add(label);
-		userPanel.add(new JLabel(icon));	//澶村儚鏍囩
+		userPanel.add(new JLabel(icon));	
 		userPanel.add(rightPanel);
 		
-		listPanel = new JPanel(new GridLayout(friendMap.size(), 1, 3, 3));//
+		listPanel = new JPanel(new GridLayout(friendMap.size(), 1, 3, 3));
 		listPanel.setBorder(BorderFactory.createTitledBorder("好友列表"));	
 		friendPanelMap = new HashMap<String, FriendPanel>(Util.MAXUSERNUM);
 		
@@ -145,7 +143,6 @@ public class MainFrame extends JFrame
 		this.add(listPanel);
 		this.add(addButton);
 		this.setVisible(true);
-		//this.setSize(400, 800);
 		this.pack();
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter()
@@ -157,8 +154,6 @@ public class MainFrame extends JFrame
 			}
 		});
 	}
-	
-
 
 	/**
 	 * 当窗口关闭时调用此方法
@@ -228,7 +223,7 @@ public class MainFrame extends JFrame
 	}
 
 	/**
-	 * 
+	 * 移除在线好友
 	 * @param id
 	 */
 	public void removeOnlineUser(String id)
@@ -248,7 +243,7 @@ public class MainFrame extends JFrame
 	}
 	
 	/**
-	 * 
+	 * 增加在线好友
 	 * @param id
 	 */
 	public void addOnlineUser(String id)
@@ -315,6 +310,43 @@ public class MainFrame extends JFrame
 	}
 	
 
+	/**
+	 * 删除好友：从面版中删除，从在线列表中删除，从文件中删除
+	 */
+	public void deleteFriend(Friend f)
+	{
+		listPanel.remove(friendPanelMap.get(f.id));
+		this.pack();
+		this.validate();
+		friendPanelMap.remove(f.id);
+		friendMap.remove(f.id);
+		removeOnlineUser(f.id);
+		
+		try
+		{
+			File file = new File("./resources/friends.xml");
+			Document doc = new SAXReader().read(file);
+			Element elem = (Element)doc.selectSingleNode("/friends/user[@id='" + f.id + "']");
+			doc.getRootElement().remove(elem);
+			OutputFormat format = OutputFormat.createPrettyPrint();
+			FileOutputStream out = new FileOutputStream(file);
+			XMLWriter writer = new XMLWriter(out, format);
+			writer.write(doc);
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch (DocumentException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * 增加好友:添加到好友面板，添加到在线好友列表，添加到friends.xml文件中
 	 */

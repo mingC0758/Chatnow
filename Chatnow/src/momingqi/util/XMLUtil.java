@@ -5,14 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import momingqi.client.Friend;
-import momingqi.server.User;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -34,7 +32,6 @@ public final class XMLUtil
 		String xml = String.format("<login id=\"%s\" pwd=\"%s\"/>", id, pwd);
 		return xml;
 	}
-	
 	
 	/**
 	 * 解析登陆xml，并返回到字符串id(String[0])和pwd(String[1])数组

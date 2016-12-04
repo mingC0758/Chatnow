@@ -4,10 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.swing.JOptionPane;
-
-import momingqi.util.XMLUtil;
 
 /**
  * 处理添加好友的任务，由主界面的addButton触发

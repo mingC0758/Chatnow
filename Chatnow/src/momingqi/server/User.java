@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
+/**
+ * 在线用户对象
+ * @author mingC
+ *
+ */
 public class User
 {
 	public Socket socket;

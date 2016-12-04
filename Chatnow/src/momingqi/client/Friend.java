@@ -1,5 +1,10 @@
 package momingqi.client;
 
+/**
+ * 好友信息
+ * @author mingC
+ *
+ */
 public class Friend
 {
 	public String id;
@@ -9,7 +14,6 @@ public class Friend
 	
 	public Friend(String id, String nickname, String photo)
 	{
-		super();
 		this.id = id;
 		this.nickname = nickname;
 		this.photo = photo;

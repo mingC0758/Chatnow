@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -20,6 +18,11 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+/**
+ * 接收服务端的消息，并进行相应的处理
+ * @author mingC
+ *
+ */
 public class ClientAcceptMsgThread extends Thread
 {
 	public Client client;
@@ -112,21 +115,36 @@ public class ClientAcceptMsgThread extends Thread
 		else if (tag.equals("addfriend"))
 			handleAddFriend(root);
 		
-		else if (tag.equals("removefriend"))
-			handleRemoveFriend(root);
+		else if (tag.equals("deletefriend"))
+			handleDeleteFriend(root);
 		
 		else if (tag.equals("login"))
 			handleLoginResult(root);
 		
 		else if(tag.equals("msgerror"))
-			handleMsgError();
+			handleMsgError(root);
 	}
 
-	private void handleMsgError()
+	/**
+	 * 发送上一条聊天消息时失败
+	 * @param root
+	 */
+	private void handleMsgError(Element root)
 	{
-		JOptionPane.showMessageDialog(mf, "发送消息失败！对方已下线！");
+		String time = Util.presentTime();
+		String id = root.attributeValue("id");
+		ChatFrame cf = mf.getChatFrame(id);
+		if(cf == null)
+		{
+			mf.createChatFrame(id);
+		}
+		cf.setMsgText(time, "发送消息失败！");
 	}
 
+	/**
+	 * 登陆结果处理
+	 * @param root
+	 */
 	private void handleLoginResult(Element root)
 	{
 		String result = root.attributeValue("result");
@@ -182,12 +200,18 @@ public class ClientAcceptMsgThread extends Thread
 		mf.addOnlineUser(root.attributeValue("id"));
 	}
 
-	private void handleRemoveFriend(Element root)
+	private void handleDeleteFriend(Element root)
 	{
-		// TODO Auto-generated method stub
-		
+		String id = root.attributeValue("id");
+		JOptionPane.showMessageDialog(mf, id + "与你脱离好友关系");
+		Friend f = mf.getFriend(id);
+		mf.deleteFriend(f);
 	}
 
+	/**
+	 * 添加好友消息处理
+	 * @param root
+	 */
 	private void handleAddFriend(Element root)
 	{
 		String type = root.attributeValue("type");
