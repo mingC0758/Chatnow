@@ -367,6 +367,7 @@ public class MainFrame extends JFrame
 			elem.addAttribute("id", id);
 			elem.addAttribute("nickname", f.nickname);
 			elem.addAttribute("photo", f.photo);
+			elem.addAttribute("comment", f.nickname);
 			OutputFormat format = OutputFormat.createPrettyPrint();
 			FileOutputStream out = new FileOutputStream(file);
 			XMLWriter writer = new XMLWriter(out, format);
