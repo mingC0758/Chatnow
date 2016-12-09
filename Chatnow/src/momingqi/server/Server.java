@@ -27,7 +27,7 @@ import momingqi.util.AboutPanel;
 import momingqi.util.Util;
 
 /**
- * 服务器界面，有启动和运行记录功能
+ * 服务器界面，有启动和运行记录功能，维护在线用户列表
  * @author mingC
  *
  */

@@ -74,8 +74,11 @@ public class ServerConnectThread extends Thread
 				
 				//从数据库users.xml中获取正确的密码cor)pwd
 				String[] userInfo = XMLUtil.parseUsersXML(log_id);//从users.xml中获取正确密码
-				String cor_pwd = userInfo[1];	//正确密码
-				
+				String cor_pwd = null;
+				if(userInfo != null)
+				{	
+					cor_pwd = userInfo[1];	//正确密码
+				}
 				if (userInfo != null && cor_pwd.equals(log_pwd))	//存在此用户且密码正确
 				{
 					User user = new User(socket, userInfo[0], userInfo[2], userInfo[3]);	//创建User对象

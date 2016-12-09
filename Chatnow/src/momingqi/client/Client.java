@@ -67,10 +67,10 @@ public class Client extends JFrame implements ActionListener
 		ipTextField.setFont(font1);
 		portTextField.setFont(font1);
 		
-		JLabel idLabel = new JLabel("  账号");
-		JLabel pwdLabel = new JLabel("  密码");
+		JLabel idLabel = new JLabel("   账号");
+		JLabel pwdLabel = new JLabel("   密码");
 		JLabel ipLabel = new JLabel("ip地址");
-		JLabel portLabel = new JLabel("  端口");
+		JLabel portLabel = new JLabel("   端口");
 		loginButton = new JButton("登录");
 		resetButton = new JButton("重置");
 		defaultButton = new JButton("默认");
@@ -103,8 +103,8 @@ public class Client extends JFrame implements ActionListener
 		southPanel.add(portTextField);
 		southPanel.add(defaultButton);
 		
-		idTextField.setText("10001");
-		pwdTextField.setText("12345");
+		idTextField.setText("");
+		pwdTextField.setText("");
 		ipTextField.setText("127.0.0.1");
 		portTextField.setText("10010");
 		
@@ -114,7 +114,7 @@ public class Client extends JFrame implements ActionListener
 		this.add(new AboutPanel());
 		this.setTitle("Chatme");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setSize(320, 510);
+		this.setSize(340, 540);
 		this.setAlwaysOnTop(true);
 		this.setResizable(false);
 		this.setVisible(true);

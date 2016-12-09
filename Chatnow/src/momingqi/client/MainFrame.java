@@ -1,5 +1,6 @@
 package momingqi.client;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -138,10 +139,10 @@ public class MainFrame extends JFrame
 		listPanel.setBackground(PanelBackground);
 		
 		this.getContentPane().setBackground(PanelBackground);
-		this.setLayout(new FlowLayout());
-		this.add(userPanel);
-		this.add(listPanel);
-		this.add(addButton);
+		this.setLayout(new BorderLayout(10, 10));
+		this.add(userPanel, BorderLayout.NORTH);
+		this.add(listPanel, BorderLayout.CENTER);
+		this.add(addButton, BorderLayout.SOUTH);
 		this.setVisible(true);
 		this.pack();
 		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
