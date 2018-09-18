@@ -1,5 +1,5 @@
 package momingqi.client;
-
+/**/
 /**
  * 好友信息
  * @author mingC
